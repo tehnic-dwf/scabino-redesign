@@ -3,11 +3,25 @@
 ## Obiectiv
 Construim un prototip frontend fidel identității actuale Scabino, ușor de sincronizat, partajat și rulat din GitHub. Redesignul va acoperi în final homepage, categorie, produs, coș, checkout și pagina de confirmare, începând cu **pagina de produs**.
 
+## Context strategic
+- Scabino este un retailer de beauty cu K-beauty ca categorie principală, iar experiența digitală trebuie să reducă nesiguranța din alegere, nu doar să afișeze un catalog mare.
+- Elementul central al brandului este „curated confidence": produse selectate, informație clară și ghidare reală pentru client.
+- Diferențiatorul ține de transparență și îndrumare personalizată, nu de cele mai mici prețuri sau de cantitatea maximă de produse.
+- Piețele existente construiesc deja încredere prin recomandări și comunitate, iar prototipul trebuie să se sprijine pe această direcție.
+
+
 ## Direcție vizuală stabilită
 - Păstrăm logo-ul, paleta burgundy–roz–alb, fonturile și limbajul vizual existente pe scabino.ro.
 - Folosim imaginile reale de produs și elementele de brand disponibile pe site, fără a inventa o identitate nouă.
 - Compoziție premium și aerisită, cu ierarhie mai clară și spațiere generoasă.
 - Experiență adaptată complet pentru desktop și mobil.
+
+### Cum traducem brandul în pagini
+- Fiecare element trebuie să ajute clientul să înțeleagă, să aleagă sau să aibă încredere; restul este decorație de eliminat.
+- Pe pagina de produs răspundem explicit la șase întrebări: „Este pentru mine?", „De ce funcționează?", „Cum îl folosesc?", „Pot avea încredere?", „Cu ce îl compar?", „Ce spun alții?".
+- Tonul rămâne educațional și calm, nu clinic sau agresiv comercial.
+- Rolul UX este să transforme complexitatea catalogului într-o alegere simplă și justificată.
+
 
 ## Materiale preluate din site-ul actual
 - Copiem și păstrăm local logo-ul Scabino în variantele necesare pentru antet și subsol.
@@ -36,7 +50,10 @@ Construim un prototip frontend fidel identității actuale Scabino, ușor de sin
 3. **Argumente de alegere**
    - ingrediente-cheie, tip de ten, beneficii și momentul din rutină;
    - Scabino Loyalty integrat discret;
-   - informația esențială este vizibilă înaintea textelor detaliate.
+   - informația esențială este vizibilă înaintea textelor detaliate;
+   - explicațiile leghează ingrediente cu nevoie reală: ce rezolvă, pentru cine și când;
+   - suficiente dovezi de încredere în zona de decizie: produse originale, livrare, retur, suport.
+
 
 4. **Conținut detaliat**
    - detalii produs, beneficii, ingrediente, utilizare și informații suplimentare;
