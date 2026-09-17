@@ -1,5 +1,4 @@
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 
@@ -58,7 +57,6 @@ function RootComponent() {
   return (
     <>
       <Outlet />
-      <TanStackRouterDevtools position="bottom-right" />
       <Toaster position="bottom-left" richColors />
     </>
   );
