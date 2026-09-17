@@ -147,11 +147,6 @@ export const product = {
   skinTypes: ["Sensibil", "Toate tipurile"],
   benefitLine:
     "Exfoliere blândă pentru pielea corpului, fără frecare și fără parfum — pentru zonele aspre sau cu pori încărcați.",
-  imageCaptions: [
-    "Produsul, ambalaj original",
-    "Textura produsului",
-    "Aplicare pe piele",
-  ],
   verdict: [
     ["Rol principal", "Exfoliere blândă + calmare"],
     ["Textură", "Spray foarte fluid, apos"],

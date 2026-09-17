@@ -2,6 +2,7 @@ import logoAsset from "@/assets/scabino/logo.webp.asset.json";
 import mainAsset from "@/assets/scabino/product-medicube-main.webp.asset.json";
 import g2Asset from "@/assets/scabino/product-medicube-textura.jpg.asset.json";
 import g3Asset from "@/assets/scabino/product-medicube-aplicare.jpg.asset.json";
+import g4Asset from "@/assets/scabino/product-in-context.jpg.asset.json";
 
 import r1Asset from "@/assets/scabino/review-1.webp.asset.json";
 import r2Asset from "@/assets/scabino/review-2.webp.asset.json";
@@ -23,7 +24,7 @@ import recHeimish from "@/assets/scabino/rec-heimish-balm.png.asset.json";
 import recArencia from "@/assets/scabino/rec-arencia-mochi.jpg.asset.json";
 
 export const logo = logoAsset.url;
-export const productImages = [mainAsset.url, g2Asset.url, g3Asset.url];
+export const productImages = [mainAsset.url, g2Asset.url, g3Asset.url, g4Asset.url];
 
 export const reviewPhotos = [r1Asset.url, r2Asset.url, r3Asset.url];
 export const reviewGallery = [r4Asset.url, r5Asset.url, r6Asset.url];
