@@ -3,6 +3,13 @@
 ## Obiectiv
 Construim un prototip frontend fidel identității actuale Scabino, ușor de sincronizat, partajat și rulat din GitHub. Redesignul va acoperi în final homepage, categorie, produs, coș, checkout și pagina de confirmare, începând cu **pagina de produs**.
 
+## Context strategic
+- Scabino este un retailer de beauty cu K-beauty ca categorie principală, iar experiența digitală trebuie să reducă nesiguranța din alegere, nu doar să afișeze un catalog mare.
+- Elementul central al brandului este „curated confidence": produse selectate, informație clară și ghidare reală pentru client.
+- Diferențiatorul ține de transparență și îndrumare personalizată, nu de cele mai mici prețuri sau de cantitatea maximă de produse.
+- Piețele existente construiesc deja încredere prin recomandări și comunitate, iar prototipul trebuie să se sprijine pe această direcție.
+
+
 ## Direcție vizuală stabilită
 - Păstrăm logo-ul, paleta burgundy–roz–alb, fonturile și limbajul vizual existente pe scabino.ro.
 - Folosim imaginile reale de produs și elementele de brand disponibile pe site, fără a inventa o identitate nouă.
