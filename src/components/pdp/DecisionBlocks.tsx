@@ -171,7 +171,7 @@ export function CompareTable({
   rows: [string, string, string][];
 }) {
   return (
-    <div className="overflow-x-auto rounded-2xl border bg-card">
+    <div className="max-w-full overflow-x-auto rounded-2xl border bg-card">
       <table className="w-full min-w-[40rem] text-left text-sm">
         <thead>
           <tr className="border-b bg-muted/50">

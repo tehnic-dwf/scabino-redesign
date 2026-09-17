@@ -28,9 +28,9 @@ function Separator() {
 
 export function Breadcrumbs({ items }: { items: Crumb[] }) {
   return (
-    <nav aria-label="Breadcrumb" className="border-b border-border/60 bg-background">
+    <nav aria-label="Breadcrumb" className="max-w-full overflow-hidden border-b border-border/60 bg-background">
       <ol
-        className="mx-auto flex max-w-7xl items-center gap-x-2 overflow-x-auto whitespace-nowrap px-4 py-3 text-[13px] text-muted-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="mx-auto flex w-full min-w-0 max-w-7xl items-center gap-x-2 overflow-x-auto whitespace-nowrap px-4 py-3 text-[13px] text-muted-foreground [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item, index) => {
           const last = index === items.length - 1;

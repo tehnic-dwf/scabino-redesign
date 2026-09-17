@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Heart, Minus, Plus, ShoppingBag, Star } from "lucide-react";
+import { Droplet, Heart, Minus, Plus, Shield, ShoppingBag, Sparkles, Star } from "lucide-react";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -59,18 +59,19 @@ function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
   const isFavorite = favorites.includes(product.slug);
 
   return (
-    <div id="buy-panel" className="mt-6 rounded-2xl border bg-card p-5 sm:p-6">
+    <div id="buy-panel" className="mt-6 min-w-0 rounded-2xl border bg-card p-4 sm:p-6">
       <div className="flex items-end gap-3">
         <p className="text-3xl font-bold text-primary">{formatPrice(product.price)}</p>
         <p className="pb-1 text-xs text-muted-foreground">incl. TVA</p>
       </div>
       <p className="mt-1 text-xs font-medium text-fit">
         <span className="mr-1 inline-block size-2 rounded-full bg-fit" aria-hidden />
-        În stoc · expediem azi
+        Disponibil online · expediem astăzi
       </p>
+      <p className="mt-1 text-[11px] text-muted-foreground">Cod produs: {product.code}</p>
 
-      <div className="mt-5 flex items-stretch gap-3">
-        <div className="flex items-center rounded-lg border">
+      <div className="mt-5 grid grid-cols-[auto_minmax(0,1fr)_2.75rem] items-stretch gap-2 sm:gap-3">
+        <div className="flex shrink-0 items-center rounded-lg border">
           <button
             type="button"
             aria-label="Scade cantitatea"
@@ -94,7 +95,7 @@ function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
         </div>
         <Button
           onClick={() => onAdd(quantity)}
-          className="h-11 flex-1 rounded-lg bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+          className="h-11 min-w-0 rounded-lg bg-primary px-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 sm:px-4 sm:text-sm"
         >
           <ShoppingBag className="size-4" aria-hidden />
           Adaugă în coș
@@ -114,6 +115,34 @@ function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
       <FreeShippingProgress cartValue={cartValue} />
       <TrustRow />
     </div>
+  );
+}
+
+function IngredientHighlights() {
+  const icons = [Droplet, Shield, Sparkles];
+
+  return (
+    <section aria-labelledby="ingredient-highlights" className="mt-6">
+      <h2 id="ingredient-highlights" className="text-base font-semibold text-foreground">
+        Ingrediente cheie
+      </h2>
+      <ul className="mt-3 grid grid-cols-3 gap-2">
+        {product.ingredientsKey.map((ingredient, index) => {
+          const Icon = icons[index] ?? Droplet;
+          return (
+            <li
+              key={ingredient}
+              className="flex min-w-0 flex-col items-center justify-center rounded-lg border bg-card px-2 py-3 text-center"
+            >
+              <Icon className="size-6 text-primary" strokeWidth={1.5} aria-hidden />
+              <span className="mt-2 text-[11px] font-medium leading-tight text-foreground sm:text-xs">
+                {ingredient}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
 
@@ -173,8 +202,8 @@ function IngredientsSection() {
 
 function DetailsSection() {
   return (
-    <Accordion type="multiple" className="mt-12 space-y-3">
-      <AccordionItem value="utilizare" className="rounded-xl border bg-card px-5">
+    <Accordion type="multiple" className="mt-12 border-t">
+      <AccordionItem value="utilizare" className="px-0">
         <AccordionTrigger className="text-base font-semibold text-foreground hover:no-underline">
           Cum îl folosești
         </AccordionTrigger>
@@ -190,7 +219,7 @@ function DetailsSection() {
           </p>
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="detalii" className="rounded-xl border bg-card px-5">
+      <AccordionItem value="detalii" className="px-0">
         <AccordionTrigger className="text-base font-semibold text-foreground hover:no-underline">
           Detalii produs
         </AccordionTrigger>
@@ -212,7 +241,7 @@ function DetailsSection() {
           </ul>
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="extra" className="rounded-xl border bg-card px-5">
+      <AccordionItem value="extra" className="px-0">
         <AccordionTrigger className="text-base font-semibold text-foreground hover:no-underline">
           Informații suplimentare
         </AccordionTrigger>
@@ -254,15 +283,15 @@ function ProductPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen max-w-full overflow-x-clip bg-background pb-20">
       <Header />
       <Breadcrumbs items={crumbs} />
-      <main className="mx-auto max-w-7xl px-4 py-6">
-        <div className="mt-6 grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <div className="lg:sticky lg:top-36 lg:self-start">
+      <main className="mx-auto w-full min-w-0 max-w-7xl px-4 py-6">
+        <div className="mt-6 grid min-w-0 gap-10 lg:grid-cols-2 lg:gap-14">
+          <div className="min-w-0 lg:sticky lg:top-36 lg:self-start">
             <ProductGallery />
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-sm font-semibold uppercase tracking-wide text-primary">
               {product.brand}
             </p>
@@ -277,6 +306,7 @@ function ProductPage() {
             </div>
             <AttributeTags />
             <PurchasePanel onAdd={add} />
+            <IngredientHighlights />
           </div>
         </div>
 

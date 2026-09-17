@@ -6,7 +6,7 @@ export function ProductGallery() {
   const images = product.images;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="min-w-0 max-w-full flex flex-col gap-3">
       <div className="overflow-hidden rounded-2xl border bg-card">
         <img
           src={images[active]}
