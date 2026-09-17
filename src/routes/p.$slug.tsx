@@ -44,19 +44,13 @@ export const Route = createFileRoute("/p/$slug")({
   component: ProductPage,
 });
 
-function Breadcrumb() {
-  return (
-    <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
-      <Link to="/" className="hover:text-primary">Acasă</Link>
-      <ChevronRight className="size-3" aria-hidden />
-      <Link to="/" className="hover:text-primary">{product.category}</Link>
-      <ChevronRight className="size-3" aria-hidden />
-      <span className="text-foreground" aria-current="page">
-        {product.brand} — {product.name.split(",")[0]}
-      </span>
-    </nav>
-  );
-}
+const crumbs = [
+  { label: "Prima pagină", to: "/" },
+  { label: "Produse de îngrijire a corpului", to: "/" },
+  { label: "Ingrijire corp", to: "/" },
+  { label: product.category, to: "/" },
+  { label: `${product.brand}, ${product.name}` },
+];
 
 function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
   const [quantity, setQuantity] = useState(1);
