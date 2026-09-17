@@ -1,17 +1,6 @@
 import { useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import {
-  ChevronDown,
-  ChevronRight,
-  Heart,
-  Minus,
-  Plus,
-  RefreshCcw,
-  ShieldCheck,
-  ShoppingBag,
-  Star,
-  Truck,
-} from "lucide-react";
+import { ChevronRight, Heart, Minus, Plus, ShoppingBag, Star } from "lucide-react";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -19,26 +8,36 @@ import { ProductGallery } from "@/components/ProductGallery";
 import { ReviewsSection } from "@/components/Reviews";
 import { ProductCard } from "@/components/ProductCard";
 import {
+  CompareTable,
+  CompatibilityBlock,
+  EvidenceBlock,
+  FitNonFit,
+  FreeShippingProgress,
+  LoyaltyLine,
+  Section,
+  TrustRow,
+  VerdictCard,
+} from "@/components/pdp/DecisionBlocks";
+import { RoutineGapCrossSell } from "@/components/pdp/RoutineGap";
+import { StickyBuyBar } from "@/components/pdp/StickyBuyBar";
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { formatPrice, product, recommendedProducts, shipping } from "@/data/product";
+import { formatPrice, product, recommendedProducts } from "@/data/product";
 import { useShop } from "@/lib/store";
 
 export const Route = createFileRoute("/p/$slug")({
   head: () => ({
     meta: [
       { title: `${product.brand} ${product.name} — Scabino` },
-      {
-        name: "description",
-        content: product.shortDescription.slice(0, 155),
-      },
+      { name: "description", content: product.benefitLine.slice(0, 155) },
       { property: "og:title", content: `${product.brand} ${product.name}` },
-      { property: "og:description", content: product.shortDescription },
-      { property: "og:type", content: "website" },
+      { property: "og:description", content: product.benefitLine },
+      { property: "og:type", content: "product" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
@@ -59,27 +58,20 @@ function Breadcrumb() {
   );
 }
 
-function PurchasePanel() {
+function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
   const [quantity, setQuantity] = useState(1);
-  const { addToCart, favorites, toggleFavorite } = useShop();
+  const { favorites, toggleFavorite, cartValue } = useShop();
   const isFavorite = favorites.includes(product.slug);
 
-  const add = () => {
-    addToCart({ slug: product.slug, price: product.price }, quantity);
-    toast.success(`${quantity} × ${product.brand} ${product.name.split(",")[0]} adăugat în coș`);
-  };
-
   return (
-    <div className="mt-6 rounded-2xl border bg-card p-5 sm:p-6">
+    <div id="buy-panel" className="mt-6 rounded-2xl border bg-card p-5 sm:p-6">
       <div className="flex items-end gap-3">
         <p className="text-3xl font-bold text-primary">{formatPrice(product.price)}</p>
-        <p className="pb-1 text-xs text-muted-foreground">
-          incl. TVA · + {product.loyaltyPoints} pct. loialitate
-        </p>
+        <p className="pb-1 text-xs text-muted-foreground">incl. TVA</p>
       </div>
-      <p className="mt-1 text-xs font-medium text-emerald-700">
-        <span className="mr-1 inline-block size-2 rounded-full bg-emerald-500" aria-hidden />
-        În stoc
+      <p className="mt-1 text-xs font-medium text-fit">
+        <span className="mr-1 inline-block size-2 rounded-full bg-fit" aria-hidden />
+        În stoc · expediem azi
       </p>
 
       <div className="mt-5 flex items-stretch gap-3">
@@ -106,7 +98,7 @@ function PurchasePanel() {
           </button>
         </div>
         <Button
-          onClick={add}
+          onClick={() => onAdd(quantity)}
           className="h-11 flex-1 rounded-lg bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90"
         >
           <ShoppingBag className="size-4" aria-hidden />
@@ -123,63 +115,33 @@ function PurchasePanel() {
         </button>
       </div>
 
-      <ul className="mt-5 grid gap-2.5 rounded-xl bg-muted/60 p-4 text-sm text-foreground/85">
-        <li className="flex items-center gap-2.5">
-          <ShieldCheck className="size-4 shrink-0 text-primary" aria-hidden />
-          Produse 100% originale, direct de la distribuitorii autorizați
-        </li>
-        <li className="flex items-center gap-2.5">
-          <Truck className="size-4 shrink-0 text-primary" aria-hidden />
-          Livrare GLS {formatPrice(shipping.gls)} · Easybox {formatPrice(shipping.easybox)} ·
-          gratuită de la {shipping.freeFrom} RON
-        </li>
-        <li className="flex items-center gap-2.5">
-          <RefreshCcw className="size-4 shrink-0 text-primary" aria-hidden />
-          Drept de retur în 14 zile
-        </li>
-      </ul>
+      <LoyaltyLine points={product.loyaltyPoints} />
+      <FreeShippingProgress cartValue={cartValue} />
+      <TrustRow />
     </div>
   );
 }
 
-function ChoiceHelpSection() {
+function AttributeTags() {
   return (
-    <div className="mt-10 grid gap-6 sm:grid-cols-3">
-      <div className="rounded-xl border bg-card p-5">
-        <h3 className="text-sm font-semibold text-primary">Este pentru mine?</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          Potrivit pentru toate tipurile de ten, inclusiv pielea sensibilă.
-          Alege-l dacă pielea corpului este aspră, cu pori încărcați sau
-          iritații frecvente.
-        </p>
-      </div>
-      <div className="rounded-xl border bg-card p-5">
-        <h3 className="text-sm font-semibold text-primary">De ce funcționează?</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          Acidul hipocloros dizolvă blând celulele moarte, în timp ce ceramidele
-          și panthenolul păstrează bariera cutanată intactă.
-        </p>
-      </div>
-      <div className="rounded-xl border bg-card p-5">
-        <h3 className="text-sm font-semibold text-primary">Cum îl folosesc?</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          Aplică pe pielea curată, lasă 5–10 minute, apoi clătește. De 1–3 ori
-          pe săptămână, în funcție de răspunsul pielii.
-        </p>
-      </div>
-    </div>
+    <ul className="mt-4 flex flex-wrap gap-2" aria-label="Atribute produs">
+      {[...product.skinTypes, "Fără parfum", "Spray"].map((t) => (
+        <li
+          key={t}
+          className="rounded-md bg-muted px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground"
+        >
+          {t}
+        </li>
+      ))}
+    </ul>
   );
 }
 
 function IngredientsSection() {
   return (
-    <div className="mt-10 grid gap-6 lg:grid-cols-3">
+    <div className="grid gap-6 lg:grid-cols-3">
       <div className="lg:col-span-1">
-        <h2 className="text-xl font-bold text-foreground">Ingrediente cheie</h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          Fiecare ingredient are un rol clar — fără umpluturi inutile.
-        </p>
-        <ul className="mt-4 flex flex-wrap gap-2">
+        <ul className="flex flex-wrap gap-2">
           {product.ingredientsKey.map((i) => (
             <li
               key={i}
@@ -189,19 +151,6 @@ function IngredientsSection() {
             </li>
           ))}
         </ul>
-        <div className="mt-6">
-          <h3 className="text-sm font-semibold text-primary">Tip de ten</h3>
-          <ul className="mt-2 flex flex-wrap gap-2">
-            {product.skinTypes.map((s) => (
-              <li
-                key={s}
-                className="rounded-full border px-3 py-1.5 text-xs font-medium text-foreground/80"
-              >
-                {s}
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
       <div className="lg:col-span-2">
         <ul className="space-y-3">
@@ -229,14 +178,30 @@ function IngredientsSection() {
 
 function DetailsSection() {
   return (
-    <Accordion type="multiple" defaultValue={["detalii"]} className="mt-12 space-y-3">
+    <Accordion type="multiple" className="mt-12 space-y-3">
+      <AccordionItem value="utilizare" className="rounded-xl border bg-card px-5">
+        <AccordionTrigger className="text-base font-semibold text-foreground hover:no-underline">
+          Cum îl folosești
+        </AccordionTrigger>
+        <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
+          <ol className="list-decimal space-y-1.5 pl-5">
+            {product.usage.map((u) => (
+              <li key={u}>{u}</li>
+            ))}
+          </ol>
+          <p className="mt-4">
+            Moment în rutină: seara sau înainte de duș. Continuă rutina când produsul s-a
+            distribuit și se așază confortabil pe piele.
+          </p>
+        </AccordionContent>
+      </AccordionItem>
       <AccordionItem value="detalii" className="rounded-xl border bg-card px-5">
         <AccordionTrigger className="text-base font-semibold text-foreground hover:no-underline">
           Detalii produs
         </AccordionTrigger>
         <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
           <p>{product.shortDescription}</p>
-          <h4 className="mt-5 font-semibold text-foreground">Caracteristici unice</h4>
+          <h4 className="mt-5 font-semibold text-foreground">Caracteristici</h4>
           <ul className="mt-2 space-y-2.5">
             {product.uniqueFeatures.map((f) => (
               <li key={f.title}>
@@ -248,18 +213,6 @@ function DetailsSection() {
           <ul className="mt-2 list-disc space-y-1.5 pl-5">
             {product.benefits.map((b) => (
               <li key={b}>{b}</li>
-            ))}
-          </ul>
-          <h4 className="mt-5 font-semibold text-foreground">Mod de utilizare</h4>
-          <ol className="mt-2 list-decimal space-y-1.5 pl-5">
-            {product.usage.map((u) => (
-              <li key={u}>{u}</li>
-            ))}
-          </ol>
-          <h4 className="mt-5 font-semibold text-foreground">Cum acționează</h4>
-          <ul className="mt-2 list-disc space-y-1.5 pl-5">
-            {product.action.map((a) => (
-              <li key={a}>{a}</li>
             ))}
           </ul>
         </AccordionContent>
@@ -292,36 +245,21 @@ function RatingBadge() {
         ))}
       </span>
       <span className="font-semibold">{product.rating.toFixed(1)}</span>
-      <span className="text-muted-foreground">
-        ({product.reviewCount} recenzii)
-      </span>
+      <span className="text-muted-foreground">({product.reviewCount} recenzii)</span>
     </a>
   );
 }
 
-function RecommendedSection() {
-  return (
-    <section aria-labelledby="recommended-heading" className="mt-14">
-      <div className="flex items-baseline justify-between">
-        <h2 id="recommended-heading" className="text-xl font-bold">
-          Produse recomandate pentru tine
-        </h2>
-        <Link to="/" className="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-          Vezi toate <ChevronRight className="size-4" aria-hidden />
-        </Link>
-      </div>
-      <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-        {recommendedProducts.map((p) => (
-          <ProductCard key={p.slug} product={p} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function ProductPage() {
+  const { addToCart } = useShop();
+
+  const add = (quantity = 1) => {
+    addToCart({ slug: product.slug, price: product.price }, quantity);
+    toast.success(`${quantity} × ${product.brand} ${product.name.split(",")[0]} adăugat în coș`);
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20">
       <Header />
       <main className="mx-auto max-w-7xl px-4 py-6">
         <Breadcrumb />
@@ -337,24 +275,106 @@ function ProductPage() {
             <h1 className="mt-1.5 text-2xl font-bold leading-snug text-foreground sm:text-3xl">
               {product.name}
             </h1>
+            <p className="mt-3 text-sm leading-relaxed text-foreground/85 sm:text-base">
+              {product.benefitLine}
+            </p>
             <div className="mt-3">
               <RatingBadge />
             </div>
-            <p className="mt-5 text-sm leading-relaxed text-muted-foreground sm:text-base">
-              {product.shortDescription}
-            </p>
-            <PurchasePanel />
+            <AttributeTags />
+            <PurchasePanel onAdd={add} />
           </div>
         </div>
 
-        <ChoiceHelpSection />
-        <IngredientsSection />
+        <Section
+          id="verdict"
+          title="Verdict în 15 secunde"
+          intro="Ce este, cum se simte și când îl folosești — fără să citești toată pagina."
+        >
+          <VerdictCard attributes={product.verdict} bestFor={product.bestFor} />
+        </Section>
+
+        <Section
+          id="fit"
+          title="Alege-l sau nu — spunem și când nu are sens"
+          intro="Preferăm să pierdem o vânzare decât să îți vindem un produs care nu ți se potrivește."
+        >
+          <FitNonFit
+            fit={product.fit}
+            nonFit={product.nonFit}
+            alternative={{
+              label: product.nonFitAlternative.label,
+              to: product.nonFitAlternative.to,
+            }}
+          />
+        </Section>
+
+        <Section
+          id="evidence"
+          title="Ce știm și ce nu promitem"
+          intro="Separăm ce spune brandul de ce vedem noi în formulă și de ce nu putem garanta."
+        >
+          <EvidenceBlock rows={product.evidence} />
+        </Section>
+
+        <Section
+          id="ingrediente"
+          title="Ingredientele care contează"
+          intro="Trei ingrediente cu rol clar, plus lista completă dacă vrei să verifici."
+        >
+          <IngredientsSection />
+        </Section>
+
+        <Section
+          id="compatibilitate"
+          title="Se combină cu ce folosești deja?"
+          intro="Verifică rapid dacă are loc în rutina ta sau dacă funcția este deja acoperită."
+        >
+          <CompatibilityBlock {...product.compatibility} />
+        </Section>
+
+        <Section
+          id="comparatie"
+          title="Compară cu o alternativă"
+          intro="O singură alternativă relevantă, nu douăsprezece produse similare."
+        >
+          <CompareTable
+            currentLabel={`${product.brand} Body Peel Shot`}
+            alternativeLabel={product.comparison.alternativeName}
+            rows={product.comparison.rows}
+          />
+        </Section>
+
         <DetailsSection />
+
         <div id="reviews" />
         <ReviewsSection />
-        <RecommendedSection />
+
+        <Section
+          id="routine-gap"
+          title="Ce îi lipsește rutinei tale"
+          intro="Nu îți recomandăm alt exfoliant. Îți arătăm pașii care completează acesta — sari peste ce ai deja."
+        >
+          <RoutineGapCrossSell items={product.routineGap} />
+        </Section>
+
+        <section aria-labelledby="recommended-heading" className="mt-14">
+          <h2 id="recommended-heading" className="text-xl font-bold">
+            Din aceeași categorie
+          </h2>
+          <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+            {recommendedProducts.slice(0, 6).map((p) => (
+              <ProductCard key={p.slug} product={p} />
+            ))}
+          </div>
+        </section>
       </main>
       <Footer />
+      <StickyBuyBar
+        title={`${product.brand} ${product.name.split(",")[0]}`}
+        price={product.price}
+        onAdd={() => add(1)}
+      />
     </div>
   );
 }
