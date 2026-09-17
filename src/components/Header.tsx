@@ -115,6 +115,20 @@ export function Header() {
               {c}
             </Link>
           ))}
+          <Link
+            to="/set/$slug"
+            params={{ slug: "duo-ton-uniform-si-bariera" }}
+            className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
+          >
+            Pachete
+          </Link>
+          <Link
+            to="/rutina/$slug"
+            params={{ slug: "rutina-de-baza-ten-mixt-sensibil" }}
+            className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
+          >
+            Rutine
+          </Link>
         </nav>
       </div>
 
