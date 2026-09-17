@@ -174,6 +174,15 @@
   --sidebar-accent-foreground: oklch(0.96 0.01 65);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
+  --fit: oklch(0.8 0.07 175);
+  --fit-soft: oklch(0.28 0.03 175);
+  --fit-border: oklch(0.38 0.04 175);
+  --caution: oklch(0.82 0.08 45);
+  --caution-soft: oklch(0.28 0.03 45);
+  --caution-border: oklch(0.38 0.04 45);
+  --evidence: oklch(0.8 0.03 250);
+  --evidence-soft: oklch(0.26 0.02 250);
+  --evidence-border: oklch(0.36 0.02 250);
 }
 
 @layer base {
