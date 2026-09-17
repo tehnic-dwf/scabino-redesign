@@ -149,11 +149,8 @@ export const product = {
     "Exfoliere blândă pentru pielea corpului, fără frecare și fără parfum — pentru zonele aspre sau cu pori încărcați.",
   imageCaptions: [
     "Produsul, ambalaj original",
-    "Textura de tip spray",
-    "Aplicare pe corp",
-    "Detaliu de utilizare",
-    "Eticheta și ingredientele",
-    "Rezultat după utilizare",
+    "Textura produsului",
+    "Aplicare pe piele",
   ],
   verdict: [
     ["Rol principal", "Exfoliere blândă + calmare"],
