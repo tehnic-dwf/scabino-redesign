@@ -50,7 +50,10 @@ Construim un prototip frontend fidel identității actuale Scabino, ușor de sin
 3. **Argumente de alegere**
    - ingrediente-cheie, tip de ten, beneficii și momentul din rutină;
    - Scabino Loyalty integrat discret;
-   - informația esențială este vizibilă înaintea textelor detaliate.
+   - informația esențială este vizibilă înaintea textelor detaliate;
+   - explicațiile leghează ingrediente cu nevoie reală: ce rezolvă, pentru cine și când;
+   - suficiente dovezi de încredere în zona de decizie: produse originale, livrare, retur, suport.
+
 
 4. **Conținut detaliat**
    - detalii produs, beneficii, ingrediente, utilizare și informații suplimentare;
