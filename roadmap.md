@@ -9,9 +9,9 @@
 - [x] 7. Pagină de pachet (/set/$slug) — preț separat verificabil, roluri complementare, verificare suprapunere, protocol AM/PM, așteptări realiste
 - [x] 8. Pagină de rutină completă (/rutina/$slug) — personalizare, pași cu rol, program AM/PM, introducere progresivă, reacții, add-on-uri, reaprovizionare
 - [ ] 9. Homepage (etapa următoare)
-- [ ] 7. Categorie (etapa următoare)
-- [ ] 8. Coș (etapa următoare)
-- [ ] 9. Checkout (etapa următoare)
-- [ ] 10. Thank you page (etapa următoare)
+- [ ] 10. Categorie (etapa următoare)
+- [ ] 11. Coș (etapa următoare)
+- [ ] 12. Checkout (etapa următoare)
+- [ ] 13. Thank you page (etapa următoare)
 
 Note: `/` redirecționează momentan către pagina de produs până la implementarea homepage-ului.
