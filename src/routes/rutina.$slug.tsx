@@ -4,6 +4,7 @@ import { ChevronRight, ShoppingBag, Star } from "lucide-react";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import {
   FreeShippingProgress,
   LoyaltyLine,
@@ -60,13 +61,8 @@ function RoutinePage() {
   return (
     <div className="min-h-screen bg-background pb-20">
       <Header />
+      <Breadcrumbs items={[{ label: "Prima pagină", to: "/" }, { label: "Rutine complete", to: "/" }, { label: routine.title }]} />
       <main className="mx-auto max-w-7xl px-4 py-6">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-xs text-muted-foreground">
-          <Link to="/" className="hover:text-primary">Acasă</Link>
-          <ChevronRight className="size-3" aria-hidden />
-          <span className="text-foreground" aria-current="page">Rutine complete</span>
-        </nav>
-
         <div className="mt-6 grid gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="grid grid-cols-2 gap-4 lg:sticky lg:top-36 lg:self-start">
             {steps.map((s) => {

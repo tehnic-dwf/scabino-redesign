@@ -4,6 +4,7 @@ import { ChevronRight, Heart, Minus, Plus, ShoppingBag, Star } from "lucide-reac
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ProductGallery } from "@/components/ProductGallery";
 import { ReviewsSection } from "@/components/Reviews";
 import { ProductCard } from "@/components/ProductCard";
@@ -255,9 +256,8 @@ function ProductPage() {
   return (
     <div className="min-h-screen bg-background pb-20">
       <Header />
+      <Breadcrumbs items={crumbs} />
       <main className="mx-auto max-w-7xl px-4 py-6">
-        <Breadcrumb />
-
         <div className="mt-6 grid gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="lg:sticky lg:top-36 lg:self-start">
             <ProductGallery />
