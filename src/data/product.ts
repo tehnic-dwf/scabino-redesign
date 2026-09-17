@@ -337,3 +337,7 @@ export const product = {
 export function formatPrice(value: number): string {
   return `${value.toFixed(2).replace(".", ",")} lei`;
 }
+
+export function findProduct(slug: string): RecommendedProduct | undefined {
+  return recommendedProducts.find((p) => p.slug === slug);
+}
