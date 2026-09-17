@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { ChevronRight, Heart, Minus, Plus, ShoppingBag, Star } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Heart, Minus, Plus, ShoppingBag, Star } from "lucide-react";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
