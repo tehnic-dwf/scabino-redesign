@@ -145,6 +145,96 @@ export const product = {
   images: productImages,
   ingredientsKey: ["Acid hialuronic", "Acid hipocloros", "Ceramide"],
   skinTypes: ["Sensibil", "Toate tipurile"],
+  benefitLine:
+    "Exfoliere blândă pentru pielea corpului, fără frecare și fără parfum — pentru zonele aspre sau cu pori încărcați.",
+  imageCaptions: [
+    "Produsul, ambalaj original",
+    "Textura de tip spray",
+    "Aplicare pe corp",
+    "Detaliu de utilizare",
+    "Eticheta și ingredientele",
+    "Rezultat după utilizare",
+  ],
+  verdict: [
+    ["Rol principal", "Exfoliere blândă + calmare"],
+    ["Textură", "Spray foarte fluid, apos"],
+    ["Finish", "Se clătește, nu lasă film"],
+    ["Parfum", "Fără parfum adăugat"],
+    ["Când", "Seara sau înainte de duș, de 1–3 ori pe săptămână"],
+    ["Nivel rutină", "Începător — nu cere alți activi"],
+  ] as [string, string][],
+  bestFor: "Vrei să netezești pielea spatelui sau a brațelor fără scrub abraziv.",
+  fit: [
+    "Pielea corpului este aspră, cu pori încărcați sau imperfecțiuni pe spate.",
+    "Nu tolerezi scrub-urile mecanice sau periile exfoliante.",
+    "Cauți un pas ocazional, nu încă un produs zilnic.",
+    "Preferi formule fără parfum.",
+  ],
+  nonFit: [
+    "Folosești deja un exfoliant chimic de corp care îți place — nu ai nevoie de al doilea.",
+    "Problema principală este uscăciunea severă: ai nevoie întâi de hidratare.",
+    "Cauți tratament pentru acnee diagnosticată — acesta este un produs cosmetic.",
+    "Pielea are răni deschise, arsuri solare sau eczemă activă.",
+  ],
+  nonFitAlternative: {
+    label: "Dacă pielea este mai degrabă uscată decât aspră",
+    to: "Dr. Althea 345 Relief Cream",
+    slug: "dr-althea-345-relief-cream",
+  },
+  evidence: [
+    ["Ce spune brandul", "Spray exfoliant pentru corp, formulat pentru textură neuniformă și pori încărcați."],
+    ["Ce vedem în formulă", "Acid hipocloros, ceramide, panthenol, niacinamidă, madecassosid."],
+    ["Dovadă pe produs", "Nu avem publicat un studiu clinic pe produsul finit. Nu extrapolăm de la ingredient la rezultat."],
+    ["Interpretarea noastră", "Îl vedem ca pas de întreținere a texturii, nu ca tratament."],
+    ["Ce nu promitem", "Nu tratăm acneea și nu garantăm un termen în care dispar imperfecțiunile."],
+  ] as [string, string][],
+  compatibility: {
+    works: [
+      "Geluri de duș blânde, fără sulfați agresivi",
+      "Hidratant de corp cu ceramide, după clătire",
+      "Protecție solară, pe zonele expuse",
+    ],
+    caution: [
+      "Retinoizi de corp — folosește-le în zile diferite",
+      "Scrub mecanic sau perie — nu în aceeași zi",
+      "Epilare sau ras — lasă 24 de ore",
+    ],
+    covered: [
+      "Ai deja un exfoliant de corp cu AHA/BHA pe care îl tolerezi",
+      "Folosești un peeling profesional lunar",
+    ],
+  },
+  comparison: {
+    rows: [
+      ["Rol principal", "Exfoliere blândă + calmare", "Exfoliere cu acizi, mai intensă"],
+      ["Textură", "Spray apos, se clătește", "Ser cu acid azelaic, rămâne pe piele"],
+      ["Nivel de experiență", "Începător", "Intermediar"],
+      ["Alege dacă", "Ai pielea reactivă și vrei un pas ocazional", "Vrei un activ zilnic pe zone punctuale"],
+      ["Nu alege dacă", "Vrei rezultate pe pete pigmentare", "Pielea se irită ușor la acizi"],
+    ] as [string, string, string][],
+    alternativeSlug: "nine-less-a-control-10-azelaic-acid-serum",
+    alternativeName: "Nine Less A-Control 10% Azelaic Acid Serum",
+  },
+  routineGap: [
+    {
+      slug: "arencia-fresh-green-rice-mochi-cleanser",
+      role: "Curățare blândă",
+      why: "Pasul dinaintea exfolierii, ca pielea să nu fie deja iritată.",
+      required: true,
+    },
+    {
+      slug: "dr-althea-345-relief-cream",
+      role: "Hidratare după exfoliere",
+      why: "Ceramidele refac bariera după clătire. Sari peste dacă ai deja un hidratant de corp.",
+      required: true,
+    },
+    {
+      slug: "nine-less-b-boost-10-niacinamide-serum",
+      role: "Completare opțională",
+      why: "Doar dacă ai și un obiectiv de ton neuniform. Nu este necesar pentru textură.",
+      required: false,
+    },
+  ],
   reviews: [
     {
       author: "Ghioghiu Alexandra",
@@ -153,6 +243,10 @@ export const product = {
       title: "bun",
       text: "m a scapat de cosurile de pe spate",
       photo: reviewPhotos[0],
+      skinType: "Mixt",
+      concern: "Imperfecțiuni pe corp",
+      experience: "Începător",
+      pros: ["Rezultat pe spate", "Ușor de aplicat"],
     },
     {
       author: "Băghină Raluca Alexandra",
@@ -160,6 +254,10 @@ export const product = {
       rating: 5,
       text: "Am auzit numai păreri bune",
       photo: reviewPhotos[1],
+      skinType: "Normal",
+      concern: "Textură neuniformă",
+      experience: "Începător",
+      cons: ["Prea devreme pentru un verdict"],
     },
     {
       author: "Olaru Sara",
@@ -169,6 +267,10 @@ export const product = {
       text:
         "Exfoliază foarte bine pielea, dupa doua utilizari se vad deja îmbunătățiri.",
       photo: reviewPhotos[2],
+      skinType: "Sensibil",
+      concern: "Textură neuniformă",
+      experience: "Rutină stabilă",
+      pros: ["Exfoliere eficientă", "Nu irită"],
     },
   ] as Review[],
   uniqueFeatures: [
