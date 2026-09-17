@@ -16,6 +16,13 @@ Construim un prototip frontend fidel identității actuale Scabino, ușor de sin
 - Compoziție premium și aerisită, cu ierarhie mai clară și spațiere generoasă.
 - Experiență adaptată complet pentru desktop și mobil.
 
+### Cum traducem brandul în pagini
+- Fiecare element trebuie să ajute clientul să înțeleagă, să aleagă sau să aibă încredere; restul este decorație de eliminat.
+- Pe pagina de produs răspundem explicit la șase întrebări: „Este pentru mine?", „De ce funcționează?", „Cum îl folosesc?", „Pot avea încredere?", „Cu ce îl compar?", „Ce spun alții?".
+- Tonul rămâne educațional și calm, nu clinic sau agresiv comercial.
+- Rolul UX este să transforme complexitatea catalogului într-o alegere simplă și justificată.
+
+
 ## Materiale preluate din site-ul actual
 - Copiem și păstrăm local logo-ul Scabino în variantele necesare pentru antet și subsol.
 - Identificăm fonturile folosite acum și le includem în proiect, păstrând aceleași roluri tipografice.
