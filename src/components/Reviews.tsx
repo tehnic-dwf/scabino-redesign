@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ImagePlus, Star } from "lucide-react";
+import { useMemo, useState } from "react";
+import { ImagePlus, Minus, Plus, Star } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { formatPrice, product } from "@/data/product";
+import { product } from "@/data/product";
 
 function Stars({ value, className = "size-4" }: { value: number; className?: string }) {
   return (
@@ -29,8 +29,27 @@ function Stars({ value, className = "size-4" }: { value: number; className?: str
   );
 }
 
+const ALL = "Toate";
+
 export function ReviewsSection() {
   const [open, setOpen] = useState(false);
+  const [skinType, setSkinType] = useState(ALL);
+  const [experience, setExperience] = useState(ALL);
+
+  const skinTypes = useMemo(
+    () => [ALL, ...new Set(product.reviews.map((r) => r.skinType).filter(Boolean) as string[])],
+    [],
+  );
+  const experiences = useMemo(
+    () => [ALL, ...new Set(product.reviews.map((r) => r.experience).filter(Boolean) as string[])],
+    [],
+  );
+
+  const filtered = product.reviews.filter(
+    (r) =>
+      (skinType === ALL || r.skinType === skinType) &&
+      (experience === ALL || r.experience === experience),
+  );
 
   const distribution = [5, 4, 3, 2, 1].map((stars) => ({
     stars,
@@ -39,7 +58,10 @@ export function ReviewsSection() {
 
   return (
     <section aria-labelledby="reviews-heading" className="mt-14">
-      <div className="rounded-2xl border bg-card p-6 sm:p-8">
+      <h2 id="reviews-heading" className="text-xl font-bold text-foreground sm:text-2xl">
+        Ce spun cumpărătorii
+      </h2>
+      <div className="mt-6 rounded-2xl border bg-card p-6 sm:p-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-center gap-6">
             <div className="text-center">
@@ -70,7 +92,7 @@ export function ReviewsSection() {
           </div>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="border-primary text-primary hover:bg-accent">
+              <Button variant="outline" className="h-11 border-primary text-primary hover:bg-accent">
                 Adaugă un review
               </Button>
             </DialogTrigger>
@@ -107,6 +129,7 @@ export function ReviewsSection() {
                       </label>
                     ))}
                   </div>
+                  <Input placeholder="Tipul tău de ten (ex. sensibil)" />
                   <Textarea required rows={4} placeholder="Cum ți s-a părut produsul?" />
                   <label className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
                     <ImagePlus className="size-4" aria-hidden />
@@ -115,7 +138,7 @@ export function ReviewsSection() {
                   </label>
                 </div>
                 <DialogFooter>
-                  <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90">
+                  <Button type="submit" className="h-11 bg-primary text-primary-foreground hover:bg-primary/90">
                     Trimite review
                   </Button>
                 </DialogFooter>
@@ -124,12 +147,14 @@ export function ReviewsSection() {
           </Dialog>
         </div>
 
-        <ul className="mt-8 space-y-6">
-          {product.reviews.map((r) => (
-            <li
-              key={r.author + r.date}
-              className="rounded-xl border bg-background p-5"
-            >
+        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 border-t pt-5">
+          <Filter label="Tip de ten" options={skinTypes} value={skinType} onChange={setSkinType} />
+          <Filter label="Experiență" options={experiences} value={experience} onChange={setExperience} />
+        </div>
+
+        <ul className="mt-6 space-y-6">
+          {filtered.map((r) => (
+            <li key={r.author + r.date} className="rounded-xl border bg-background p-5">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <span className="font-semibold text-foreground">{r.author}</span>
                 <span className="text-xs text-muted-foreground">{r.date}</span>
@@ -140,12 +165,35 @@ export function ReviewsSection() {
                   </span>
                 </span>
               </div>
-              {r.title && (
-                <p className="mt-2 text-sm font-semibold">{r.title}</p>
-              )}
-              <p className="mt-1 text-sm leading-relaxed text-foreground/85">
-                {r.text}
+              <p className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+                {r.skinType && <span>Ten {r.skinType.toLowerCase()}</span>}
+                {r.concern && <span>· {r.concern}</span>}
+                {r.experience && <span>· {r.experience}</span>}
               </p>
+              {r.title && <p className="mt-2 text-sm font-semibold">{r.title}</p>}
+              <p className="mt-1 text-sm leading-relaxed text-foreground/85">{r.text}</p>
+              {(r.pros || r.cons) && (
+                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                  {r.pros?.length ? (
+                    <ul className="space-y-1 text-xs text-foreground/85">
+                      {r.pros.map((p) => (
+                        <li key={p} className="flex items-center gap-1.5">
+                          <Plus className="size-3 text-fit" aria-hidden /> {p}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  {r.cons?.length ? (
+                    <ul className="space-y-1 text-xs text-foreground/85">
+                      {r.cons.map((c) => (
+                        <li key={c} className="flex items-center gap-1.5">
+                          <Minus className="size-3 text-caution" aria-hidden /> {c}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              )}
               {r.photo && (
                 <img
                   src={r.photo}
@@ -157,10 +205,50 @@ export function ReviewsSection() {
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-center text-xs text-muted-foreground">
-          Recenzii reale de pe scabino.ro · Preț actual: {formatPrice(product.price)}
+        {filtered.length === 0 && (
+          <p className="mt-6 rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
+            Nu avem încă recenzii pentru această combinație de filtre.
+          </p>
+        )}
+        <p className="mt-5 text-center text-xs text-muted-foreground">
+          Recenzii reale de pe scabino.ro. Afișăm și părerile mai puțin favorabile, nu doar cele bune.
         </p>
       </div>
     </section>
+  );
+}
+
+function Filter({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: string[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        {label}
+      </span>
+      {options.map((o) => (
+        <button
+          key={o}
+          type="button"
+          aria-pressed={value === o}
+          onClick={() => onChange(o)}
+          className={`min-h-9 rounded-full border px-3 text-xs font-medium transition-colors ${
+            value === o
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border text-foreground/80 hover:border-primary/50"
+          }`}
+        >
+          {o}
+        </button>
+      ))}
+    </div>
   );
 }

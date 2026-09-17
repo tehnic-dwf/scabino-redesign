@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PSlugRouteImport } from './routes/p.$slug'
+import { Route as RutinaSlugRouteImport } from './routes/rutina.$slug'
+import { Route as SetSlugRouteImport } from './routes/set.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +24,49 @@ const PSlugRoute = PSlugRouteImport.update({
   path: '/p/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RutinaSlugRoute = RutinaSlugRouteImport.update({
+  id: '/rutina/$slug',
+  path: '/rutina/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SetSlugRoute = SetSlugRouteImport.update({
+  id: '/set/$slug',
+  path: '/set/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/p/$slug': typeof PSlugRoute
+  '/rutina/$slug': typeof RutinaSlugRoute
+  '/set/$slug': typeof SetSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/p/$slug': typeof PSlugRoute
+  '/rutina/$slug': typeof RutinaSlugRoute
+  '/set/$slug': typeof SetSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/p/$slug': typeof PSlugRoute
+  '/rutina/$slug': typeof RutinaSlugRoute
+  '/set/$slug': typeof SetSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/p/$slug'
+  fullPaths: '/' | '/p/$slug' | '/rutina/$slug' | '/set/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/p/$slug'
-  id: '__root__' | '/' | '/p/$slug'
+  to: '/' | '/p/$slug' | '/rutina/$slug' | '/set/$slug'
+  id: '__root__' | '/' | '/p/$slug' | '/rutina/$slug' | '/set/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PSlugRoute: typeof PSlugRoute
+  RutinaSlugRoute: typeof RutinaSlugRoute
+  SetSlugRoute: typeof SetSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +85,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rutina/$slug': {
+      id: '/rutina/$slug'
+      path: '/rutina/$slug'
+      fullPath: '/rutina/$slug'
+      preLoaderRoute: typeof RutinaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/set/$slug': {
+      id: '/set/$slug'
+      path: '/set/$slug'
+      fullPath: '/set/$slug'
+      preLoaderRoute: typeof SetSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PSlugRoute: PSlugRoute,
+  RutinaSlugRoute: RutinaSlugRoute,
+  SetSlugRoute: SetSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
