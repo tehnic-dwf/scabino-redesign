@@ -9,6 +9,15 @@ Construim un prototip frontend fidel identității actuale Scabino, ușor de sin
 - Compoziție premium și aerisită, cu ierarhie mai clară și spațiere generoasă.
 - Experiență adaptată complet pentru desktop și mobil.
 
+## Materiale preluate din site-ul actual
+- Copiem și păstrăm local logo-ul Scabino în variantele necesare pentru antet și subsol.
+- Identificăm fonturile folosite acum și le includem în proiect, păstrând aceleași roluri tipografice.
+- Selectăm și copiem imaginile produsului Medicube folosit pentru prima pagină.
+- Copiem un set reprezentativ de imagini pentru produse recomandate, astfel încât listele și cardurile să folosească marfă reală.
+- Păstrăm și pictogramele utile pentru livrare și elementele vizuale Scabino care susțin pagina de produs.
+- Materialele vor fi stocate prin sistemul de fișiere media al proiectului, pentru încărcare rapidă și randare stabilă inclusiv din GitHub; nu vor depinde de linkurile site-ului actual.
+- Copiem doar materialele necesare prototipului, nu întreaga bibliotecă media a magazinului.
+
 ## Etapa 1 — Pagina de produs
 
 ### Structură
@@ -61,7 +70,7 @@ Toate paginile vor reutiliza același antet, subsol, produse, controale și regu
 - Pagini separate, cu linkuri partajabile și informații proprii pentru motoare de căutare și social media.
 - Date demonstrative locale pentru prima versiune; fără conectare la sistemul real de comenzi în această etapă.
 - Componente comune pentru navigare, galerie, produs, preț, cantitate, recenzii și sumar de comandă.
-- Imaginile Scabino vor fi preluate în proiect pentru o randare stabilă, nu încărcate direct de pe site la fiecare vizită.
+- Logo-ul, fonturile și imaginile Scabino selectate vor fi preluate în proiect pentru o randare stabilă, nu încărcate direct de pe site la fiecare vizită.
 - Verificare vizuală și funcțională pe desktop și mobil după fiecare pagină.
 
 ## Livrabilul primei etape
