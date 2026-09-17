@@ -122,6 +122,11 @@ export interface Review {
   title?: string;
   text: string;
   photo?: string;
+  skinType?: string;
+  concern?: string;
+  experience?: string;
+  pros?: string[];
+  cons?: string[];
 }
 
 export const product = {
