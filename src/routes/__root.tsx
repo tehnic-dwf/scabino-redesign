@@ -1,6 +1,7 @@
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import type { QueryClient } from "@tanstack/react-query";
 import { Toaster } from "sonner";
+import { ShopProvider } from "@/lib/store";
 
 import appCss from "@/styles.css?url";
 
@@ -55,9 +56,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootComponent() {
   return (
-    <>
+    <ShopProvider>
       <Outlet />
       <Toaster position="bottom-left" richColors />
-    </>
+    </ShopProvider>
   );
 }
