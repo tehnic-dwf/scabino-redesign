@@ -8,7 +8,7 @@ export interface Crumb {
 export function Breadcrumbs({ items }: { items: Crumb[] }) {
   return (
     <nav aria-label="Breadcrumb" className="border-b border-border/60 bg-background">
-      <ol className="mx-auto flex max-w-[90rem] flex-wrap items-center gap-x-2 gap-y-1 px-4 py-3 text-[13px] text-muted-foreground">
+      <ol className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-2 gap-y-1 px-4 py-3 text-[13px] text-muted-foreground">
         {items.map((item, index) => {
           const last = index === items.length - 1;
           return (

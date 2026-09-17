@@ -32,7 +32,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-card">
       <div className="bg-secondary">
-        <div className="mx-auto flex h-9 max-w-[90rem] items-center justify-center px-4">
+        <div className="mx-auto flex h-9 max-w-7xl items-center justify-center px-4">
           <p
             key={slide}
             className="text-center text-xs font-medium text-foreground/80 sm:text-[13px]"
@@ -44,7 +44,7 @@ export function Header() {
       </div>
 
       <div className="bg-card">
-        <div className="mx-auto flex max-w-[90rem] items-center gap-4 px-4 py-4 lg:py-5">
+        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 lg:py-5">
           <button
             type="button"
             className="-ml-2 rounded-md p-2 text-primary lg:hidden"
@@ -149,13 +149,13 @@ export function Header() {
 
         <nav
           aria-label="Categorii"
-          className="mx-auto hidden max-w-[90rem] items-center gap-7 px-4 pb-4 lg:flex"
+          className="mx-auto hidden max-w-7xl items-center gap-5 px-4 pb-4 lg:flex xl:gap-7"
         >
           {categories.map((c) => (
             <Link
               key={c}
               to="/"
-              className="text-[15px] font-bold text-primary transition-opacity hover:opacity-70"
+              className="text-sm font-bold text-primary transition-opacity hover:opacity-70 xl:text-[15px]"
             >
               {c}
             </Link>
@@ -163,14 +163,14 @@ export function Header() {
           <Link
             to="/set/$slug"
             params={{ slug: "duo-ton-uniform-si-bariera" }}
-            className="text-[15px] font-bold text-primary transition-opacity hover:opacity-70"
+            className="text-sm font-bold text-primary transition-opacity hover:opacity-70 xl:text-[15px]"
           >
             Pachete
           </Link>
           <Link
             to="/rutina/$slug"
             params={{ slug: "rutina-de-baza-ten-mixt-sensibil" }}
-            className="text-[15px] font-bold text-primary transition-opacity hover:opacity-70"
+            className="text-sm font-bold text-primary transition-opacity hover:opacity-70 xl:text-[15px]"
           >
             Rutine
           </Link>
@@ -179,7 +179,7 @@ export function Header() {
 
       {mobileOpen && (
         <nav aria-label="Categorii" className="border-b bg-card lg:hidden">
-          <div className="mx-auto flex max-w-[90rem] flex-col px-4 py-2">
+          <div className="mx-auto flex max-w-7xl flex-col px-4 py-2">
             {categories.map((c) => (
               <Link
                 key={c}
