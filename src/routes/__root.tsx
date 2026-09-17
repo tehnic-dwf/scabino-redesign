@@ -1,5 +1,6 @@
-import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext, HeadContent, Scripts, Link, useRouter } from "@tanstack/react-router";
 import type { QueryClient } from "@tanstack/react-query";
+import type { ReactNode } from "react";
 import { Toaster } from "sonner";
 import { ShopProvider } from "@/lib/store";
 
@@ -51,8 +52,23 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
 
+  shellComponent: RootShell,
   component: RootComponent,
 });
+
+function RootShell({ children }: { children: ReactNode }) {
+  return (
+    <html lang="ro">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
 
 function RootComponent() {
   return (
