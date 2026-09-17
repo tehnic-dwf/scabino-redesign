@@ -130,6 +130,15 @@
   --sidebar-accent-foreground: oklch(0.32 0.1 25);
   --sidebar-border: oklch(0.91 0.015 65);
   --sidebar-ring: oklch(0.45 0.11 22);
+  --fit: oklch(0.45 0.07 175);
+  --fit-soft: oklch(0.96 0.02 175);
+  --fit-border: oklch(0.88 0.04 175);
+  --caution: oklch(0.52 0.09 45);
+  --caution-soft: oklch(0.96 0.02 45);
+  --caution-border: oklch(0.89 0.04 45);
+  --evidence: oklch(0.45 0.03 250);
+  --evidence-soft: oklch(0.965 0.008 250);
+  --evidence-border: oklch(0.89 0.015 250);
 }
 
 .dark {
