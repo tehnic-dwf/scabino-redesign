@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { ChevronRight, Heart, Minus, Plus, ShoppingBag, Star } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Heart, Minus, Plus, ShoppingBag, Star } from "lucide-react";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ProductGallery } from "@/components/ProductGallery";
 import { ReviewsSection } from "@/components/Reviews";
 import { ProductCard } from "@/components/ProductCard";
@@ -44,19 +45,13 @@ export const Route = createFileRoute("/p/$slug")({
   component: ProductPage,
 });
 
-function Breadcrumb() {
-  return (
-    <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
-      <Link to="/" className="hover:text-primary">Acasă</Link>
-      <ChevronRight className="size-3" aria-hidden />
-      <Link to="/" className="hover:text-primary">{product.category}</Link>
-      <ChevronRight className="size-3" aria-hidden />
-      <span className="text-foreground" aria-current="page">
-        {product.brand} — {product.name.split(",")[0]}
-      </span>
-    </nav>
-  );
-}
+const crumbs = [
+  { label: "Prima pagină", to: "/" },
+  { label: "Produse de îngrijire a corpului", to: "/" },
+  { label: "Ingrijire corp", to: "/" },
+  { label: product.category, to: "/" },
+  { label: `${product.brand}, ${product.name}` },
+];
 
 function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
   const [quantity, setQuantity] = useState(1);
@@ -261,9 +256,8 @@ function ProductPage() {
   return (
     <div className="min-h-screen bg-background pb-20">
       <Header />
+      <Breadcrumbs items={crumbs} />
       <main className="mx-auto max-w-7xl px-4 py-6">
-        <Breadcrumb />
-
         <div className="mt-6 grid gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="lg:sticky lg:top-36 lg:self-start">
             <ProductGallery />
