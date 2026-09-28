@@ -36,13 +36,14 @@ function VideoPlaceholder({ poster, large }: { poster: string; large?: boolean }
 
 export function ProductGallery() {
   const [active, setActive] = useState(0);
-  const imgs = product.images;
+  const imgs = product.images as string[];
+  const first = imgs[0] ?? "";
   const slides: Slide[] = [
-    { type: "image", src: imgs[0] },
-    { type: "video", poster: imgs[1] ?? imgs[0] },
+    { type: "image", src: first },
+    { type: "video", poster: imgs[1] ?? first },
     ...imgs.slice(1).map((src) => ({ type: "image" as const, src })),
   ];
-  const current = slides[active];
+  const current = slides[active] ?? slides[0]!;
 
   return (
     <div className="min-w-0 max-w-full flex flex-col gap-3">
