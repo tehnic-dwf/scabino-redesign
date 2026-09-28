@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { ShoppingBag } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
+import { useShop } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/data/product";
 
@@ -7,11 +8,15 @@ export function StickyBuyBar({
   title,
   price,
   onAdd,
+  slug,
 }: {
   title: string;
   price: number;
   onAdd: () => void;
+  slug?: string;
 }) {
+  const { favorites, toggleFavorite } = useShop();
+  const fav = slug ? favorites.includes(slug) : false;
   const [visible, setVisible] = useState(false);
   const raf = useRef(0);
 
@@ -44,14 +49,28 @@ export function StickyBuyBar({
           {title}
         </p>
         <p className="shrink-0 text-sm font-bold text-primary sm:text-base">{formatPrice(price)}</p>
+        <div className="col-span-2 flex gap-2 sm:contents">
+        {slug && (
+          <button
+            type="button"
+            tabIndex={visible ? 0 : -1}
+            aria-label={fav ? "Elimină din favorite" : "Adaugă la favorite"}
+            aria-pressed={fav}
+            onClick={() => toggleFavorite(slug)}
+            className="flex size-10 shrink-0 items-center justify-center rounded-lg border text-primary sm:size-11"
+          >
+            <Heart className={`size-5 ${fav ? "fill-primary" : ""}`} aria-hidden />
+          </button>
+        )}
         <Button
           onClick={onAdd}
           tabIndex={visible ? 0 : -1}
-          className="col-span-2 h-10 w-full rounded-lg bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90 sm:h-11 sm:w-auto sm:flex-none sm:px-8"
+          className="h-10 min-w-0 flex-1 rounded-lg bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90 sm:h-11 sm:w-auto sm:flex-none sm:px-8"
         >
           <ShoppingBag className="size-4" aria-hidden />
           Adaugă în coș
         </Button>
+        </div>
       </div>
     </div>
   );

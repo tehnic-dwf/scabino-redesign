@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Droplet, Heart, Minus, Plus, Shield, ShoppingBag, Sparkles, Star } from "lucide-react";
-import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -19,6 +18,14 @@ import {
   TrustRow,
   VerdictCard,
 } from "@/components/pdp/DecisionBlocks";
+import {
+  AuthenticityLine,
+  DeliveryEstimate,
+  HowToSteps,
+  ProductFaq,
+  faqJsonLd,
+} from "@/components/pdp/ConversionBlocks";
+import { AddedToCartSheet } from "@/components/pdp/AddedToCartSheet";
 import { RoutineGapCrossSell } from "@/components/pdp/RoutineGap";
 import { StickyBuyBar } from "@/components/pdp/StickyBuyBar";
 import {
@@ -29,7 +36,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { formatPrice, product, recommendedProducts } from "@/data/product";
+import { formatPrice, product, recommendedProducts, unitPrice } from "@/data/product";
 import { useShop } from "@/lib/store";
 
 export const Route = createFileRoute("/p/$slug")({
@@ -61,17 +68,21 @@ function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
 
   return (
     <div id="buy-panel" className="mt-4 min-w-0 rounded-2xl border bg-card p-4 sm:mt-6 sm:p-6">
-      <div className="flex items-end gap-3">
+      <div className="flex flex-wrap items-end gap-x-3 gap-y-0.5">
         <p className="text-3xl font-bold text-primary">{formatPrice(product.price)}</p>
-        <p className="pb-1 text-xs text-muted-foreground">incl. TVA</p>
+        <p className="pb-1 text-xs text-muted-foreground">
+          incl. TVA · {unitPrice(product.price, product.volumeMl)}
+        </p>
       </div>
       <p className="mt-1 text-xs font-medium text-fit">
         <span className="mr-1 inline-block size-2 rounded-full bg-fit" aria-hidden />
-        Disponibil online · expediem astăzi
+        {product.stock ? "În stoc" : "Stoc epuizat"}
       </p>
+      <DeliveryEstimate />
       <p className="mt-1 hidden text-[11px] text-muted-foreground sm:block">
         Cod produs: {product.code}
       </p>
+      <AuthenticityLine />
 
       <div className="mt-4 grid grid-cols-[auto_minmax(0,1fr)_2.75rem] items-stretch gap-2 sm:mt-5 sm:gap-3">
         <div className="flex shrink-0 items-center rounded-lg border">
@@ -113,6 +124,11 @@ function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
           <Heart className={`size-5 ${isFavorite ? "fill-primary" : ""}`} aria-hidden />
         </button>
       </div>
+      <p className="mt-2 text-[11px] text-muted-foreground">
+        {isFavorite
+          ? "Salvat la favorite — te anunțăm dacă scade prețul sau se termină stocul."
+          : "Nu te-ai hotărât? Salvează-l la favorite ♡ și te anunțăm la reducere."}
+      </p>
 
       <LoyaltyLine points={product.loyaltyPoints} />
       <FreeShippingProgress cartValue={cartValue} />
@@ -296,10 +312,11 @@ function RatingBadge() {
 
 function ProductPage() {
   const { addToCart } = useShop();
+  const [added, setAdded] = useState<number | null>(null);
 
   const add = (quantity = 1) => {
     addToCart({ slug: product.slug, price: product.price }, quantity);
-    toast.success(`${quantity} × ${product.brand} ${product.name.split(",")[0]} adăugat în coș`);
+    setAdded(quantity);
   };
 
   const commaIndex = product.name.indexOf(",");
@@ -343,6 +360,7 @@ function ProductPage() {
             </div>
             <AttributeTags />
             <PurchasePanel onAdd={add} />
+            <HowToSteps />
             <IngredientHighlights />
           </div>
         </div>
@@ -408,8 +426,17 @@ function ProductPage() {
 
         <DetailsSection />
 
-        <div id="reviews" />
+        <div id="reviews" className="scroll-mt-24" />
         <ReviewsSection />
+
+        <Section
+          id="faq"
+          title="Întrebări frecvente"
+          intro="Răspunsuri scurte la ce ne întreabă cel mai des clienții despre acest produs."
+        >
+          <ProductFaq />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqJsonLd() }} />
+        </Section>
 
         <Section
           id="routine-gap"
@@ -435,6 +462,12 @@ function ProductPage() {
         title={`${product.brand} ${product.name.split(",")[0]}`}
         price={product.price}
         onAdd={() => add(1)}
+        slug={product.slug}
+      />
+      <AddedToCartSheet
+        open={added !== null}
+        onOpenChange={(o) => !o && setAdded(null)}
+        quantity={added ?? 1}
       />
     </div>
   );

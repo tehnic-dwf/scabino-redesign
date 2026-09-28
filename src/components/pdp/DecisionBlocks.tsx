@@ -210,7 +210,7 @@ export function TrustRow() {
     <ul className="mt-4 grid gap-2 text-xs text-muted-foreground sm:grid-cols-2">
       <li className="flex items-center gap-2">
         <ShieldCheck className="size-4 shrink-0 text-primary" aria-hidden />
-        Produs original, de la distribuitori autorizați
+        Distribuitori autorizați
       </li>
       <li className="flex items-center gap-2">
         <CreditCard className="size-4 shrink-0 text-primary" aria-hidden />

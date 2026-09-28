@@ -1,38 +1,81 @@
 import { useState } from "react";
+import { Play } from "lucide-react";
 import { product } from "@/data/product";
+
+type Slide = { type: "image"; src: string } | { type: "video"; poster: string };
+
+function VideoPlaceholder({ poster, large }: { poster: string; large?: boolean }) {
+  return (
+    <div className="relative size-full">
+      <img src={poster} alt="" className="size-full bg-white object-contain opacity-40" />
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-primary/10 p-3 text-center">
+        <span
+          className={`flex items-center justify-center rounded-full bg-primary text-primary-foreground ${
+            large ? "size-16" : "size-7"
+          }`}
+        >
+          <Play className={large ? "size-7 fill-current" : "size-3.5 fill-current"} aria-hidden />
+        </span>
+        {large ? (
+          <>
+            <p className="text-sm font-semibold text-foreground">Clip textură · 5–10 secunde</p>
+            <p className="max-w-xs text-xs leading-relaxed text-muted-foreground">
+              Aici se încarcă un clip scurt, fără sunet, care arată textura produsului pe piele
+              (pulverizare și absorbție). Format vertical sau pătrat, MP4.
+            </p>
+          </>
+        ) : (
+          <span className="text-[9px] font-semibold uppercase leading-none tracking-wide text-foreground">
+            Video
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function ProductGallery() {
   const [active, setActive] = useState(0);
-  const images = product.images;
+  const imgs = product.images as string[];
+  const first = imgs[0] ?? "";
+  const slides: Slide[] = [
+    { type: "image", src: first },
+    { type: "video", poster: imgs[1] ?? first },
+    ...imgs.slice(1).map((src) => ({ type: "image" as const, src })),
+  ];
+  const current = slides[active] ?? slides[0]!;
 
   return (
     <div className="min-w-0 max-w-full flex flex-col gap-3">
-      <div className="overflow-hidden rounded-2xl border bg-card">
-        <img
-          src={images[active]}
-          alt={`${product.brand} ${product.name}`}
-          className="aspect-square w-full bg-white object-contain"
-        />
+      <div className="aspect-square overflow-hidden rounded-2xl border bg-card">
+        {current.type === "image" ? (
+          <img
+            src={current.src}
+            alt={`${product.brand} ${product.name}`}
+            className="size-full bg-white object-contain"
+          />
+        ) : (
+          <VideoPlaceholder poster={current.poster} large />
+        )}
       </div>
       <div className="flex flex-wrap gap-2.5" role="tablist" aria-label="Imagini produs">
-        {images.map((src, i) => (
+        {slides.map((s, i) => (
           <button
-            key={src}
+            key={i}
             type="button"
             role="tab"
             aria-selected={i === active}
-            aria-label={`Imagine ${i + 1} din ${images.length}`}
+            aria-label={s.type === "video" ? "Clip textură" : `Imagine ${i + 1} din ${slides.length}`}
             onClick={() => setActive(i)}
-            className={`overflow-hidden rounded-lg border-2 transition-colors ${
+            className={`size-16 overflow-hidden rounded-lg border-2 transition-colors sm:size-20 ${
               i === active ? "border-primary" : "border-border/60 hover:border-primary/50"
             }`}
           >
-            <img
-              src={src}
-              alt=""
-              loading="lazy"
-              className="size-16 bg-white object-contain sm:size-20"
-            />
+            {s.type === "image" ? (
+              <img src={s.src} alt="" loading="lazy" className="size-full bg-white object-contain" />
+            ) : (
+              <VideoPlaceholder poster={s.poster} />
+            )}
           </button>
         ))}
       </div>
