@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BadgeCheck, CalendarDays, Droplets, SprayCan, Truck, Waves } from "lucide-react";
+import { CalendarDays, Droplets, SprayCan, Truck, Waves } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -8,11 +8,30 @@ import {
 } from "@/components/ui/accordion";
 import { product, shipping } from "@/data/product";
 
+function KoreaFlag({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="-72 -48 144 96"
+      className={className}
+      role="img"
+      aria-label="Steagul Coreei de Sud"
+      focusable="false"
+    >
+      <path fill="#fff" d="M-72-48v96H72v-96z" />
+      <g stroke="#000" strokeWidth="4" fill="none">
+        <path d="M-34.946-37.72-48.26-17.75m4.992 3.328 13.313-19.97m4.992 3.329-13.312 19.969m63.236 42.157 6.101-9.152m1.11-1.664 6.101-9.153m4.993 3.328-6.102 9.153m-1.11 1.664-6.101 9.152m4.992 3.329 6.102-9.153m1.11-1.664 6.1-9.153M-48.259 17.75l13.313 19.97m4.992-3.329-6.102-9.152m-1.109-1.664-6.102-9.153m4.993-3.328 13.312 19.97m63.236-42.158-6.101-9.153m-1.11-1.664-6.101-9.152m4.992-3.328 13.313 19.969m4.992-3.328-6.102-9.153m-1.11-1.664-6.1-9.153" />
+      </g>
+      <path fill="#cd2e3a" d="M9.985 6.656A18 18 0 1 1-19.97-13.313a24 24 0 1 1 39.938 26.626" />
+      <path fill="#0047a0" d="M0 0a12 12 0 1 1 19.97 13.313 24 24 0 1 1-39.94-26.626A12 12 0 1 0 0 0" />
+    </svg>
+  );
+}
+
 export function AuthenticityLine() {
   return (
-    <p className="mt-3 flex items-start gap-2 rounded-lg bg-muted/60 px-3 py-2 text-xs leading-relaxed text-foreground/85">
-      <BadgeCheck className="mt-0.5 size-4 shrink-0 text-fit" aria-hidden />
-      <span>
+    <p className="mt-3 flex items-center gap-2.5 rounded-lg bg-muted/60 px-3 py-2 text-xs leading-relaxed text-foreground/85">
+      <KoreaFlag className="h-4 w-6 shrink-0 rounded-[2px] ring-1 ring-black/15" />
+      <span className="min-w-0">
         <strong className="font-semibold">Produs original</strong>, importat din {product.origin} ·
         lot și valabilitate verificate · valabil până la {product.expiry}
       </span>
