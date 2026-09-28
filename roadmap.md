@@ -8,6 +8,7 @@
 - [x] 6. Strat de decizie pe pagina de produs (verdict, alege-l / nu-l alege, transparență, compatibilitate, comparație, „ce îi lipsește rutinei tale", bară de cumpărare lipicioasă, filtre la recenzii)
 - [x] 7. Pagină de pachet (/set/$slug) — preț separat verificabil, roluri complementare, verificare suprapunere, protocol AM/PM, așteptări realiste
 - [x] 8. Pagină de rutină completă (/rutina/$slug) — personalizare, pași cu rol, program AM/PM, introducere progresivă, reacții, add-on-uri, reaprovizionare
+- [x] 8.1. Rafinare UX mobil PDP — bară sticky compactă, SKU mutat în detalii, ingrediente explicabile la atingere
 - [ ] 9. Homepage (etapa următoare)
 - [ ] 10. Categorie (etapa următoare)
 - [ ] 11. Coș (etapa următoare)
