@@ -325,7 +325,47 @@ export const product = {
   ],
   inci:
     "Water, Hypochlorous Acid, Sodium Chloride, Glycerin, Butylene Glycol, 1,2-Hexanediol, Panthenol, Allantoin, Ceramide NP, Sodium Hyaluronate, Niacinamide, Madecassoside, Betaine, Trehalose, Citric Acid, Disodium EDTA.",
+  volumeMl: 280,
+  expiry: "12.2028",
+  origin: "Coreea de Sud",
+  howTo: [
+    { title: "Agită", text: "Agită flaconul câteva secunde." },
+    { title: "Pulverizează", text: "Pe pielea curată și uscată, de la 15 cm." },
+    { title: "Clătește", text: "După 5–10 minute, cu apă călduță." },
+  ],
+  frequency: "De 1–3 ori pe săptămână",
+  reviewHighlights: [
+    "Piele mai netedă după primele 2 utilizări",
+    "Nu irită, nici pe ten sensibil",
+    "Ajută la imperfecțiunile de pe spate",
+  ],
+  faq: [
+    {
+      q: "Pot să-l folosesc după epilare?",
+      a: "Așteaptă 24–48 de ore după epilare sau ras. Pe pielea proaspăt epilată orice exfoliant poate înțepa.",
+    },
+    {
+      q: "Merge pe pielea sensibilă?",
+      a: "Da, formula este fără parfum și conține ceramide și panthenol. Începe cu o aplicare pe săptămână și crește treptat.",
+    },
+    {
+      q: "Cu ce nu se combină?",
+      a: "Nu îl folosi în aceeași zi cu alte exfoliante (AHA/BHA, scrub-uri) sau cu retinoizi pe corp.",
+    },
+    {
+      q: "Pot să-l folosesc pe față?",
+      a: "Este formulat pentru corp. Pentru față alege un exfoliant dedicat, cu concentrații adaptate.",
+    },
+    {
+      q: "Cât ține un flacon?",
+      a: "La 2 utilizări pe săptămână pe spate și brațe, aproximativ 2–3 luni.",
+    },
+  ],
 };
+
+export function unitPrice(price: number, ml: number): string {
+  return `${formatPrice((price / ml) * 100)} / 100 ml`;
+}
 
 export function formatPrice(value: number): string {
   return `${value.toFixed(2).replace(".", ",")} lei`;
