@@ -327,8 +327,8 @@ function ProductPage() {
     <div className="min-h-screen max-w-full overflow-x-clip bg-background pb-20">
       <Header />
       <Breadcrumbs items={crumbs} />
-      <main className="mx-auto w-full min-w-0 max-w-7xl px-4 py-6">
-        <div className="mt-6 grid min-w-0 gap-5 lg:grid-cols-2 lg:gap-14">
+      <main className="mx-auto w-full min-w-0 max-w-7xl px-4 pb-6 pt-3">
+        <div className="mt-1 grid min-w-0 gap-5 lg:grid-cols-2 lg:gap-14">
           {/* Mobile: brand + title above the gallery (identity → visual → action) */}
           <div className="min-w-0 lg:hidden">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
@@ -340,7 +340,7 @@ function ProductPage() {
             <p className="mt-1 text-sm text-muted-foreground">{productSubtitle}</p>
           </div>
 
-          <div className="mt-3 min-w-0 lg:mt-0 lg:sticky lg:top-36 lg:self-start">
+          <div className="min-w-0 lg:sticky lg:top-36 lg:self-start">
             <ProductGallery />
           </div>
           <div className="mt-6 min-w-0 lg:mt-0">
