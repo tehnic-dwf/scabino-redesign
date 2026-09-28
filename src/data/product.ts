@@ -311,6 +311,7 @@ export const product = {
     "Ceramidele și acidul hialuronic refac bariera și hidratarea după tratament.",
   ],
   extraInfo: [
+    ["Cod produs", "6419"],
     ["Greutate", "0,1 kg"],
     ["Dimensiuni", "10 × 5 × 5 cm"],
     ["Brand", "Medicube"],

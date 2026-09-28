@@ -28,6 +28,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { formatPrice, product, recommendedProducts } from "@/data/product";
 import { useShop } from "@/lib/store";
 
@@ -59,7 +60,7 @@ function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
   const isFavorite = favorites.includes(product.slug);
 
   return (
-    <div id="buy-panel" className="mt-6 min-w-0 rounded-2xl border bg-card p-4 sm:p-6">
+    <div id="buy-panel" className="mt-4 min-w-0 rounded-2xl border bg-card p-4 sm:mt-6 sm:p-6">
       <div className="flex items-end gap-3">
         <p className="text-3xl font-bold text-primary">{formatPrice(product.price)}</p>
         <p className="pb-1 text-xs text-muted-foreground">incl. TVA</p>
@@ -68,9 +69,11 @@ function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
         <span className="mr-1 inline-block size-2 rounded-full bg-fit" aria-hidden />
         Disponibil online · expediem astăzi
       </p>
-      <p className="mt-1 text-[11px] text-muted-foreground">Cod produs: {product.code}</p>
+      <p className="mt-1 hidden text-[11px] text-muted-foreground sm:block">
+        Cod produs: {product.code}
+      </p>
 
-      <div className="mt-5 grid grid-cols-[auto_minmax(0,1fr)_2.75rem] items-stretch gap-2 sm:gap-3">
+      <div className="mt-4 grid grid-cols-[auto_minmax(0,1fr)_2.75rem] items-stretch gap-2 sm:mt-5 sm:gap-3">
         <div className="flex shrink-0 items-center rounded-lg border">
           <button
             type="button"
@@ -120,6 +123,7 @@ function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
 
 function IngredientHighlights() {
   const icons = [Droplet, Shield, Sparkles];
+  const explanations = new Map(product.keyIngredients.map((ingredient) => [ingredient.name, ingredient.role]));
 
   return (
     <section aria-labelledby="ingredient-highlights" className="mt-6">
@@ -130,14 +134,30 @@ function IngredientHighlights() {
         {product.ingredientsKey.map((ingredient, index) => {
           const Icon = icons[index] ?? Droplet;
           return (
-            <li
-              key={ingredient}
-              className="flex min-w-0 flex-col items-center justify-center rounded-lg border bg-card px-2 py-3 text-center"
-            >
-              <Icon className="size-6 text-primary" strokeWidth={1.5} aria-hidden />
-              <span className="mt-2 text-[11px] font-medium leading-tight text-foreground sm:text-xs">
-                {ingredient}
-              </span>
+            <li key={ingredient} className="min-w-0">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    aria-label={`Află mai multe despre ${ingredient}`}
+                    className="h-full min-h-20 w-full min-w-0 whitespace-normal rounded-lg px-2 py-3 shadow-none"
+                  >
+                    <span className="flex min-w-0 flex-col items-center text-center">
+                      <Icon className="size-6 text-primary" strokeWidth={1.5} aria-hidden />
+                      <span className="mt-2 text-[11px] font-medium leading-tight text-foreground sm:text-xs">
+                        {ingredient}
+                      </span>
+                    </span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64 p-3" side="top">
+                  <p className="text-sm font-semibold text-foreground">{ingredient}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                    {explanations.get(ingredient)}
+                  </p>
+                </PopoverContent>
+              </Popover>
             </li>
           );
         })}
@@ -152,7 +172,7 @@ function AttributeTags() {
       {[...product.skinTypes, "Fără parfum", "Spray"].map((t) => (
         <li
           key={t}
-          className="rounded-md bg-muted px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground"
+          className="border-l-2 border-primary/30 bg-muted/60 px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground"
         >
           {t}
         </li>
