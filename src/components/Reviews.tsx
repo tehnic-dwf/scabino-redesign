@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ImagePlus, Minus, Plus, Star } from "lucide-react";
+import { ImagePlus, Minus, Plus, Quote, Star } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -35,6 +35,9 @@ export function ReviewsSection() {
   const [open, setOpen] = useState(false);
   const [skinType, setSkinType] = useState(ALL);
   const [experience, setExperience] = useState(ALL);
+  const [criticalOnly, setCriticalOnly] = useState(false);
+  const [photo, setPhoto] = useState<string | null>(null);
+  const photos = product.reviews.filter((r) => r.photo);
 
   const skinTypes = useMemo(
     () => [ALL, ...new Set(product.reviews.map((r) => r.skinType).filter(Boolean) as string[])],
@@ -48,12 +51,13 @@ export function ReviewsSection() {
   const filtered = product.reviews.filter(
     (r) =>
       (skinType === ALL || r.skinType === skinType) &&
-      (experience === ALL || r.experience === experience),
+      (experience === ALL || r.experience === experience) &&
+      (!criticalOnly || r.rating <= 3 || (r.cons?.length ?? 0) > 0),
   );
 
   const distribution = [5, 4, 3, 2, 1].map((stars) => ({
     stars,
-    count: stars === 5 ? product.reviewCount : 0,
+    count: product.reviews.filter((r) => r.rating === stars).length,
   }));
 
   return (
@@ -80,7 +84,7 @@ export function ReviewsSection() {
                   <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
                     <div
                       className="h-full rounded-full bg-primary"
-                      style={{ width: `${(d.count / product.reviewCount) * 100}%` }}
+                      style={{ width: `${(d.count / Math.max(1, product.reviews.length)) * 100}%` }}
                     />
                   </div>
                   <span className="w-4 text-right text-xs text-muted-foreground">
@@ -147,9 +151,62 @@ export function ReviewsSection() {
           </Dialog>
         </div>
 
+        <div className="mt-6 border-t pt-5">
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Ce spun clienții
+          </p>
+          <ul className="mt-2 grid gap-2 sm:grid-cols-3">
+            {product.reviewHighlights.map((h) => (
+              <li key={h} className="flex items-start gap-2 rounded-lg bg-muted/60 p-3 text-sm text-foreground/85">
+                <Quote className="mt-0.5 size-3.5 shrink-0 text-primary" aria-hidden />
+                {h}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {photos.length > 0 && (
+          <div className="mt-5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Poze de la clienți ({photos.length})
+            </p>
+            <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+              {photos.map((r) => (
+                <button
+                  key={r.photo}
+                  type="button"
+                  onClick={() => setPhoto(r.photo!)}
+                  aria-label={`Vezi poza de la ${r.author}`}
+                  className="shrink-0 overflow-hidden rounded-lg border hover:border-primary"
+                >
+                  <img src={r.photo} alt="" loading="lazy" className="size-20 object-cover" />
+                </button>
+              ))}
+            </div>
+            <Dialog open={photo !== null} onOpenChange={(o) => !o && setPhoto(null)}>
+              <DialogContent className="max-w-md p-2">
+                <DialogTitle className="sr-only">Poză de la client</DialogTitle>
+                {photo && <img src={photo} alt="Poză de la client" className="w-full rounded-lg" />}
+              </DialogContent>
+            </Dialog>
+          </div>
+        )}
+
         <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 border-t pt-5">
           <Filter label="Tip de ten" options={skinTypes} value={skinType} onChange={setSkinType} />
           <Filter label="Experiență" options={experiences} value={experience} onChange={setExperience} />
+          <button
+            type="button"
+            aria-pressed={criticalOnly}
+            onClick={() => setCriticalOnly((v) => !v)}
+            className={`min-h-9 rounded-full border px-3 text-xs font-medium transition-colors ${
+              criticalOnly
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border text-foreground/80 hover:border-primary/50"
+            }`}
+          >
+            Doar critice / cu minusuri
+          </button>
         </div>
 
         <ul className="mt-6 space-y-6">
