@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Play } from "lucide-react";
 import { product } from "@/data/product";
 
@@ -36,6 +36,17 @@ function VideoPlaceholder({ poster, large }: { poster: string; large?: boolean }
 
 export function ProductGallery() {
   const [active, setActive] = useState(0);
+  const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const select = (i: number) => {
+    setActive(i);
+    thumbRefs.current[i]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "nearest",
+    });
+  };
+
   const imgs = product.images as string[];
   const first = imgs[0] ?? "";
   const slides: Slide[] = [
@@ -58,16 +69,23 @@ export function ProductGallery() {
           <VideoPlaceholder poster={current.poster} large />
         )}
       </div>
-      <div className="flex flex-wrap gap-2.5" role="tablist" aria-label="Imagini produs">
+      <div
+        className="-mx-1 flex snap-x snap-mandatory gap-2.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        role="tablist"
+        aria-label="Imagini produs"
+      >
         {slides.map((s, i) => (
           <button
             key={i}
+            ref={(el) => {
+              thumbRefs.current[i] = el;
+            }}
             type="button"
             role="tab"
             aria-selected={i === active}
             aria-label={s.type === "video" ? "Clip textură" : `Imagine ${i + 1} din ${slides.length}`}
-            onClick={() => setActive(i)}
-            className={`size-16 overflow-hidden rounded-lg border-2 transition-colors sm:size-20 ${
+            onClick={() => select(i)}
+            className={`size-16 shrink-0 snap-start overflow-hidden rounded-lg border-2 transition-colors sm:size-20 ${
               i === active ? "border-primary" : "border-border/60 hover:border-primary/50"
             }`}
           >
