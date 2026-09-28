@@ -302,6 +302,10 @@ function ProductPage() {
     toast.success(`${quantity} × ${product.brand} ${product.name.split(",")[0]} adăugat în coș`);
   };
 
+  const commaIndex = product.name.indexOf(",");
+  const mainTitle = commaIndex > -1 ? product.name.slice(0, commaIndex) : product.name;
+  const productSubtitle = commaIndex > -1 ? product.name.slice(commaIndex + 1).trim() : "";
+
   return (
     <div className="min-h-screen max-w-full overflow-x-clip bg-background pb-20">
       <Header />
