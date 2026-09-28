@@ -340,7 +340,7 @@ function ProductPage() {
             <p className="mt-1 text-sm text-muted-foreground">{productSubtitle}</p>
           </div>
 
-          <div className="mt-4 min-w-0 lg:mt-0 lg:sticky lg:top-36 lg:self-start">
+          <div className="mt-13 min-w-0 lg:mt-0 lg:sticky lg:top-36 lg:self-start">
             <ProductGallery />
           </div>
           <div className="min-w-0">
