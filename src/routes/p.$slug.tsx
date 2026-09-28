@@ -308,16 +308,29 @@ function ProductPage() {
       <Breadcrumbs items={crumbs} />
       <main className="mx-auto w-full min-w-0 max-w-7xl px-4 py-6">
         <div className="mt-6 grid min-w-0 gap-10 lg:grid-cols-2 lg:gap-14">
-          <div className="min-w-0 lg:sticky lg:top-36 lg:self-start">
+          {/* Mobile: brand + title above the gallery (identity → visual → action) */}
+          <div className="min-w-0 lg:hidden">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+              {product.brand}
+            </p>
+            <h1 className="mt-1 text-xl font-bold leading-snug text-foreground">
+              {mainTitle}
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">{productSubtitle}</p>
+          </div>
+
+          <div className="mt-4 min-w-0 lg:mt-0 lg:sticky lg:top-36 lg:self-start">
             <ProductGallery />
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-semibold uppercase tracking-wide text-primary">
-              {product.brand}
-            </p>
-            <h1 className="mt-1.5 text-2xl font-bold leading-snug text-foreground sm:text-3xl">
-              {product.name}
-            </h1>
+            <div className="hidden lg:block">
+              <p className="text-sm font-semibold uppercase tracking-wide text-primary">
+                {product.brand}
+              </p>
+              <h1 className="mt-1.5 text-2xl font-bold leading-snug text-foreground sm:text-3xl">
+                {product.name}
+              </h1>
+            </div>
             <p className="mt-3 text-sm leading-relaxed text-foreground/85 sm:text-base">
               {product.benefitLine}
             </p>
