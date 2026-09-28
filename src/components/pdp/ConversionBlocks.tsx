@@ -30,7 +30,7 @@ function KoreaFlag({ className }: { className?: string }) {
 export function AuthenticityLine() {
   return (
     <p className="mt-3 rounded-lg bg-muted/60 px-3 py-2 text-xs leading-relaxed text-foreground/85">
-      <KoreaFlag className="mt-0.5 mr-2 mb-0.5 float-left h-6 w-9 rounded-[3px] ring-1 ring-black/15" />
+      <KoreaFlag className="mt-1 mr-2 mb-0.5 float-left h-6 w-9 rounded-[3px] ring-1 ring-black/15" />
       <strong className="font-semibold">Produs original</strong>, importat din {product.origin} · lot
       și valabilitate verificate · valabil până la {product.expiry}
     </p>
