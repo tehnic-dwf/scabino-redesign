@@ -10,3 +10,5 @@
 <!-- LOVABLE:END -->
 
 - Ruta `/p/$slug` selectează explicit datele și prezentarea după slug, deoarece fiecare produs din prototip trebuie să aibă conținut propriu.
+
+- Ruta `/cosmetice-coreene/creme-de-ochi-coreene` folosește catalogul real verificat, filtre în URL și nu include analytics.

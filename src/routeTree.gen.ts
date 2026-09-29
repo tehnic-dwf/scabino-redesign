@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CosmeticeCoreeneCremeDeOchiCoreeneRouteImport } from './routes/cosmetice-coreene.creme-de-ochi-coreene'
 import { Route as PSlugRouteImport } from './routes/p.$slug'
 import { Route as RutinaSlugRouteImport } from './routes/rutina.$slug'
 import { Route as SetSlugRouteImport } from './routes/set.$slug'
@@ -19,6 +20,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CosmeticeCoreeneCremeDeOchiCoreeneRoute =
+  CosmeticeCoreeneCremeDeOchiCoreeneRouteImport.update({
+    id: '/cosmetice-coreene/creme-de-ochi-coreene',
+    path: '/cosmetice-coreene/creme-de-ochi-coreene',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PSlugRoute = PSlugRouteImport.update({
   id: '/p/$slug',
   path: '/p/$slug',
@@ -37,12 +44,14 @@ const SetSlugRoute = SetSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cosmetice-coreene/creme-de-ochi-coreene': typeof CosmeticeCoreeneCremeDeOchiCoreeneRoute
   '/p/$slug': typeof PSlugRoute
   '/rutina/$slug': typeof RutinaSlugRoute
   '/set/$slug': typeof SetSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cosmetice-coreene/creme-de-ochi-coreene': typeof CosmeticeCoreeneCremeDeOchiCoreeneRoute
   '/p/$slug': typeof PSlugRoute
   '/rutina/$slug': typeof RutinaSlugRoute
   '/set/$slug': typeof SetSlugRoute
@@ -50,20 +59,38 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cosmetice-coreene/creme-de-ochi-coreene': typeof CosmeticeCoreeneCremeDeOchiCoreeneRoute
   '/p/$slug': typeof PSlugRoute
   '/rutina/$slug': typeof RutinaSlugRoute
   '/set/$slug': typeof SetSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/p/$slug' | '/rutina/$slug' | '/set/$slug'
+  fullPaths:
+    | '/'
+    | '/cosmetice-coreene/creme-de-ochi-coreene'
+    | '/p/$slug'
+    | '/rutina/$slug'
+    | '/set/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/p/$slug' | '/rutina/$slug' | '/set/$slug'
-  id: '__root__' | '/' | '/p/$slug' | '/rutina/$slug' | '/set/$slug'
+  to:
+    | '/'
+    | '/cosmetice-coreene/creme-de-ochi-coreene'
+    | '/p/$slug'
+    | '/rutina/$slug'
+    | '/set/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/cosmetice-coreene/creme-de-ochi-coreene'
+    | '/p/$slug'
+    | '/rutina/$slug'
+    | '/set/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CosmeticeCoreeneCremeDeOchiCoreeneRoute: typeof CosmeticeCoreeneCremeDeOchiCoreeneRoute
   PSlugRoute: typeof PSlugRoute
   RutinaSlugRoute: typeof RutinaSlugRoute
   SetSlugRoute: typeof SetSlugRoute
@@ -76,6 +103,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cosmetice-coreene/creme-de-ochi-coreene': {
+      id: '/cosmetice-coreene/creme-de-ochi-coreene'
+      path: '/cosmetice-coreene/creme-de-ochi-coreene'
+      fullPath: '/cosmetice-coreene/creme-de-ochi-coreene'
+      preLoaderRoute: typeof CosmeticeCoreeneCremeDeOchiCoreeneRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/p/$slug': {
@@ -104,6 +138,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CosmeticeCoreeneCremeDeOchiCoreeneRoute:
+    CosmeticeCoreeneCremeDeOchiCoreeneRoute,
   PSlugRoute: PSlugRoute,
   RutinaSlugRoute: RutinaSlugRoute,
   SetSlugRoute: SetSlugRoute,

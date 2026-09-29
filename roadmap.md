@@ -11,7 +11,7 @@
 - [x] 8.1. Rafinare UX mobil PDP — bară sticky compactă, SKU mutat în detalii, ingrediente explicabile la atingere
 - [x] 8.2. Produs 2 OOS — K-Secret Seoul 1988 Eye Cream (PDP complet, stare OOS + alternative)
 - [ ] 9. Homepage (etapa următoare)
-- [ ] 10. Categorie (etapa următoare)
+- [x] 10. Categorie — Creme de ochi coreene (catalog real, filtre și stări de stoc)
 - [ ] 11. Coș (etapa următoare)
 - [ ] 12. Checkout (etapa următoare)
 - [ ] 13. Thank you page (etapa următoare)
