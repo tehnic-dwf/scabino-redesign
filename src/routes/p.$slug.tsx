@@ -192,7 +192,6 @@ function AttributeTags() {
   );
 }
 
-
 function SecondaryDetails() {
   return (
     <section aria-labelledby="details-heading" className="mt-14">
