@@ -9,7 +9,7 @@
 - [x] 7. Pagină de pachet (/set/$slug) — preț separat verificabil, roluri complementare, verificare suprapunere, protocol AM/PM, așteptări realiste
 - [x] 8. Pagină de rutină completă (/rutina/$slug) — personalizare, pași cu rol, program AM/PM, introducere progresivă, reacții, add-on-uri, reaprovizionare
 - [x] 8.1. Rafinare UX mobil PDP — bară sticky compactă, SKU mutat în detalii, ingrediente explicabile la atingere
-- [ ] 8.2. Produs 2 OOS — K-Secret Seoul 1988 Eye Cream (imagine și acces rapid pregătite; urmează designul PDP)
+- [x] 8.2. Produs 2 OOS — K-Secret Seoul 1988 Eye Cream (PDP complet, stare OOS + alternative)
 - [ ] 9. Homepage (etapa următoare)
 - [ ] 10. Categorie (etapa următoare)
 - [ ] 11. Coș (etapa următoare)
