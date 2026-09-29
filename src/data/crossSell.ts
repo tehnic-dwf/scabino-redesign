@@ -80,7 +80,7 @@ export interface AddedProductInfo {
   brand: string;
   name: string;
   price: number;
-  oldPrice?: number;
+  oldPrice?: number | undefined;
   image: string;
   routineRole: string;
 }
@@ -96,8 +96,7 @@ export function resolveAddedProduct(slug: string): AddedProductInfo | null {
       brand: product.brand,
       name: product.name.split(",")[0],
       price: product.price,
-      oldPrice: product.oldPrice,
-      image: product.images[0],
+      image: product.images[0] ?? "",
       routineRole: "body-peel",
     };
   }
