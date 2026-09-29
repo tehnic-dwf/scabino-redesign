@@ -376,11 +376,7 @@ function ProductPage() {
           </div>
         </div>
 
-        <Section
-          id="quick-match"
-          title="Ce produs este"
-          intro="Răspunde la „Ce fel de produs este?” — caracteristicile esențiale, nu beneficiile."
-        >
+        <Section id="quick-match" title="Ce produs este:">
           <QuickMatch attributes={product.quickMatch} />
         </Section>
 
