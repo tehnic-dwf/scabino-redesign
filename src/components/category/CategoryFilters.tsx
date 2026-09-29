@@ -51,7 +51,7 @@ export function CategoryFilters({ filters, products, onToggle, onPromo, onPrice 
           <AccordionItem value={group.id} key={group.id}>
             <AccordionTrigger className="text-[13px] font-semibold no-underline hover:no-underline">{group.title}</AccordionTrigger>
             <AccordionContent>
-              <div className="max-h-52 space-y-2.5 overflow-y-auto pr-1">
+              <div className="space-y-2.5">
                 {group.values.map((value) => {
                   const checked = filters[group.id].includes(value);
                   return <label key={value} className="flex cursor-pointer items-center gap-2.5 text-xs leading-tight text-foreground/85">
