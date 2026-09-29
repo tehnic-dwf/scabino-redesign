@@ -18,6 +18,10 @@ export const Route = createFileRoute("/cosmetice-coreene/creme-de-ochi-coreene")
     meta: [
       { title: "Creme de ochi coreene | Scabino" },
       { name: "description", content: "Creme, seruri și plasturi coreeni pentru conturul ochilor, selectați după nevoie, ingrediente și tipul de ten." },
+      { property: "og:title", content: "Creme de ochi coreene | Scabino" },
+      { property: "og:description", content: "Creme, seruri și plasturi coreeni pentru conturul ochilor, selectați după nevoie, ingrediente și tipul de ten." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: EyeCategoryPage,
@@ -109,6 +113,12 @@ function EyeCategoryPage() {
   };
 
   const active = (["concerns", "ingredients", "types", "brands", "skin", "availability"] as FilterArrayKey[]).flatMap((field) => filters[field].map((value) => ({ field, value })));
+  const draftResultCount = useMemo(() => eyeProducts.filter((product) => matches(product, draftFilters)).length, [draftFilters]);
+  const recoveryOptions = useMemo(() => active.flatMap(({ field, value }) => {
+    const candidate = { ...filters, [field]: filters[field].filter((item) => item !== value) };
+    const results = eyeProducts.filter((product) => matches(product, candidate)).length;
+    return results > 0 ? [{ field, value, results }] : [];
+  }), [active, filters]);
 
   return <div className="min-h-screen overflow-x-clip bg-background">
     <Header />
@@ -138,12 +148,12 @@ function EyeCategoryPage() {
       <div className="mt-6 flex items-center justify-between gap-3">
         <Sheet open={filterOpen} onOpenChange={(open) => { setFilterOpen(open); if (open) setDraftFilters(filters); }}>
           <SheetTrigger asChild><Button variant="outline" className="h-10 gap-2 rounded-full lg:hidden"><SlidersHorizontal className="size-4" />Filtre {count > 0 && <span className="grid size-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">{count}</span>}</Button></SheetTrigger>
-          <SheetContent side="bottom" className="flex max-h-[88dvh] flex-col rounded-t-3xl px-5 pb-5 pt-6">
-            <SheetHeader className="pr-7 text-left"><SheetTitle>Filtre</SheetTitle><SheetDescription>Alege criteriile, apoi aplică selecția.</SheetDescription></SheetHeader>
-            <div className="mt-3 min-h-0 flex-1 overflow-y-auto"><CategoryFilters filters={draftFilters} products={eyeProducts} onToggle={toggleDraft} onPromo={(promo) => setDraftFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setDraftFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div>
-            <SheetFooter className="mt-4 grid grid-cols-2 gap-2 border-t pt-4">
+          <SheetContent side="bottom" className="inset-0 flex h-dvh max-h-none flex-col gap-0 rounded-none border-0 px-5 pb-4 pt-5">
+            <SheetHeader className="shrink-0 border-b pb-4 pr-8 text-left"><SheetTitle>Filtre</SheetTitle><SheetDescription>Selectează criteriile potrivite.</SheetDescription></SheetHeader>
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"><CategoryFilters filters={draftFilters} products={eyeProducts} onToggle={toggleDraft} onPromo={(promo) => setDraftFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setDraftFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div>
+            <SheetFooter className="grid shrink-0 grid-cols-2 gap-2 border-t bg-background pt-4">
               <Button variant="outline" onClick={() => setDraftFilters(emptyFilters)}>Șterge filtrele</Button>
-              <Button onClick={() => { setFilters(draftFilters); setFilterOpen(false); }}>Vezi {eyeProducts.filter((p) => matches(p, draftFilters)).length} produse</Button>
+              <Button onClick={() => { setFilters(draftFilters); setFilterOpen(false); }}>Vezi {draftResultCount} {draftResultCount === 1 ? "produs" : "produse"}</Button>
             </SheetFooter>
           </SheetContent>
         </Sheet>
@@ -164,7 +174,7 @@ function EyeCategoryPage() {
         {active.map(({ field, value }) => <button key={`${field}-${value}`} type="button" onClick={() => removeChip(field, value)} className="flex items-center gap-1 rounded-full bg-secondary/65 px-3 py-1.5 text-[10px] font-semibold text-primary">{value}<X className="size-3" /></button>)}
         {filters.promo && <button type="button" onClick={() => removeChip("promo")} className="flex items-center gap-1 rounded-full bg-secondary/65 px-3 py-1.5 text-[10px] font-semibold text-primary">Promoții<X className="size-3" /></button>}
         {(filters.minPrice > 0 || filters.maxPrice < 260) && <button type="button" onClick={() => removeChip("price")} className="flex items-center gap-1 rounded-full bg-secondary/65 px-3 py-1.5 text-[10px] font-semibold text-primary">{filters.minPrice}–{filters.maxPrice} lei<X className="size-3" /></button>}
-        <button type="button" onClick={reset} className="px-2 py-1 text-[10px] font-semibold text-muted-foreground underline underline-offset-4">Șterge tot</button>
+        <Button type="button" variant="link" onClick={reset} className="h-auto px-2 py-1 text-[10px] font-semibold text-muted-foreground underline underline-offset-4">Șterge toate</Button>
       </div>}
 
       <div className="mt-7 grid min-w-0 gap-8 lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[245px_minmax(0,1fr)]">
@@ -176,7 +186,7 @@ function EyeCategoryPage() {
               {filtered.slice(0, visible).map((product) => <EyeProductCard key={product.id} product={product} priority={product.id === 1} />)}
             </div>
             {visible < filtered.length && <div className="mt-12 text-center"><Button variant="outline" className="h-11 rounded-full px-7" onClick={() => setVisible((n) => n + 8)}>Încarcă mai multe <ChevronDown className="ml-2 size-4" /></Button><p className="mt-2 text-[10px] text-muted-foreground">Ai văzut {Math.min(visible, filtered.length)} din {filtered.length} produse</p></div>}
-          </> : <div className="rounded-2xl border bg-card px-6 py-14 text-center"><h2 className="text-lg font-bold text-primary">Nu am găsit produse pentru combinația selectată</h2><p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">Elimină unul dintre filtre sau pornește din nou cu toate cele 22 de produse.</p><Button className="mt-5 rounded-full" onClick={reset}>Șterge filtrele</Button></div>}
+          </> : <div className="rounded-2xl border bg-card px-6 py-14 text-center"><h2 className="text-lg font-bold text-primary">Nu am găsit produse pentru combinația selectată</h2><p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">Elimină un filtru activ pentru a vedea din nou produse.</p>{recoveryOptions.length > 0 && <div className="mx-auto mt-5 flex max-w-lg flex-wrap justify-center gap-2">{recoveryOptions.map(({ field, value, results }) => <Button key={`${field}-${value}`} variant="outline" size="sm" className="rounded-full" onClick={() => removeChip(field, value)}>Elimină „{value}” · {results}</Button>)}</div>}<Button variant="link" className="mt-3" onClick={reset}>Șterge toate filtrele</Button></div>}
         </section>
       </div>
     </main>
