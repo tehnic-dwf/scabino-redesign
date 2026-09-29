@@ -28,6 +28,7 @@ import { AddedToCartSheet } from "@/components/pdp/AddedToCartSheet";
 import { RoutineGapCrossSell } from "@/components/pdp/RoutineGap";
 import { QuickMatch } from "@/components/pdp/QuickMatch";
 import { StickyBuyBar } from "@/components/pdp/StickyBuyBar";
+import { KSecretProductDraft, kSecretProduct } from "@/components/KSecretProductDraft";
 import {
   Accordion,
   AccordionContent,
@@ -40,18 +41,38 @@ import { formatPrice, product, recommendedProducts, unitPrice } from "@/data/pro
 import { useShop } from "@/lib/store";
 
 export const Route = createFileRoute("/p/$slug")({
-  head: () => ({
-    meta: [
-      { title: `${product.brand} ${product.name} — Scabino` },
-      { name: "description", content: product.benefitLine.slice(0, 155) },
-      { property: "og:title", content: `${product.brand} ${product.name}` },
-      { property: "og:description", content: product.benefitLine },
-      { property: "og:type", content: "product" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: ProductPage,
+  head: ({ params }) => {
+    const isKSecret = params.slug === kSecretProduct.slug;
+    const title = isKSecret
+      ? `${kSecretProduct.brand} ${kSecretProduct.name} — Scabino`
+      : `${product.brand} ${product.name} — Scabino`;
+    const description = isKSecret
+      ? `${kSecretProduct.subtitle}. Produs indisponibil momentan.`
+      : product.benefitLine;
+
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description.slice(0, 155) },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "product" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+    };
+  },
+  component: ProductRoute,
 });
+
+function ProductRoute() {
+  const { slug } = Route.useParams();
+
+  if (slug === kSecretProduct.slug) {
+    return <KSecretProductDraft />;
+  }
+
+  return <ProductPage />;
+}
 
 const crumbs = [
   { label: "Prima pagină", to: "/" },
