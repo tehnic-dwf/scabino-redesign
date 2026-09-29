@@ -8,7 +8,6 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { EyeProductCard } from "@/components/category/EyeProductCard";
 import { CategoryFilters, type CategoryFilterState } from "@/components/category/CategoryFilters";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { concernChoices, eyeProducts, type EyeProduct } from "@/data/eyeCategory";
 import { cn } from "@/lib/utils";
@@ -146,17 +145,18 @@ function EyeCategoryPage() {
       </section>
 
       <div className="mt-6 flex items-center justify-between gap-3">
-        <Sheet open={filterOpen} onOpenChange={(open) => { setFilterOpen(open); if (open) setDraftFilters(filters); }}>
-          <Button type="button" variant="outline" onClick={() => { setDraftFilters(filters); setFilterOpen(true); }} className="h-10 gap-2 rounded-full lg:hidden"><SlidersHorizontal className="size-4" />Filtre {count > 0 && <span className="grid size-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">{count}</span>}</Button>
-          <SheetContent side="bottom" className="inset-0 flex h-dvh max-h-none flex-col gap-0 rounded-none border-0 px-5 pb-4 pt-5">
-            <SheetHeader className="shrink-0 border-b pb-4 pr-8 text-left"><SheetTitle>Filtre</SheetTitle><SheetDescription>Selectează criteriile potrivite.</SheetDescription></SheetHeader>
-            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"><CategoryFilters filters={draftFilters} products={eyeProducts} onToggle={toggleDraft} onPromo={(promo) => setDraftFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setDraftFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div>
-            <SheetFooter className="grid shrink-0 grid-cols-2 gap-2 border-t bg-background pt-4">
-              <Button variant="outline" onClick={() => setDraftFilters(emptyFilters)}>Șterge filtrele</Button>
-              <Button onClick={() => { setFilters(draftFilters); setFilterOpen(false); }}>Vezi {draftResultCount} {draftResultCount === 1 ? "produs" : "produse"}</Button>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
+        <Button type="button" variant="outline" onClick={() => { setDraftFilters(filters); setFilterOpen(true); }} className="h-10 gap-2 rounded-full lg:hidden"><SlidersHorizontal className="size-4" />Filtre {count > 0 && <span className="grid size-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">{count}</span>}</Button>
+        {filterOpen && <div role="dialog" aria-modal="true" aria-labelledby="mobile-filter-title" className="fixed inset-0 z-50 flex h-dvh flex-col bg-background px-5 pb-4 pt-5 lg:hidden">
+          <div className="flex shrink-0 items-start justify-between border-b pb-4">
+            <div><h2 id="mobile-filter-title" className="text-lg font-semibold text-foreground">Filtre</h2><p className="mt-1 text-sm text-muted-foreground">Selectează criteriile potrivite.</p></div>
+            <Button type="button" variant="ghost" size="icon" aria-label="Închide filtrele" onClick={() => setFilterOpen(false)}><X className="size-4" /></Button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"><CategoryFilters filters={draftFilters} products={eyeProducts} onToggle={toggleDraft} onPromo={(promo) => setDraftFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setDraftFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div>
+          <div className="grid shrink-0 grid-cols-2 gap-2 border-t bg-background pt-4">
+            <Button variant="outline" onClick={() => setDraftFilters(emptyFilters)}>Șterge filtrele</Button>
+            <Button onClick={() => { setFilters(draftFilters); setFilterOpen(false); }}>Vezi {draftResultCount} {draftResultCount === 1 ? "produs" : "produse"}</Button>
+          </div>
+        </div>}
 
         <p className="hidden text-xs text-muted-foreground lg:block">{filtered.length} {filtered.length === 1 ? "produs găsit" : "produse găsite"}</p>
         <div className="ml-auto flex items-center gap-2">
