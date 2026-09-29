@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { BellRing, Heart, ShoppingBag, Star } from "lucide-react";
-import { toast } from "sonner";
 import { formatPrice } from "@/data/product";
 import type { EyeProduct } from "@/data/eyeCategory";
 import { useShop } from "@/lib/store";
