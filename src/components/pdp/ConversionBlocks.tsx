@@ -80,12 +80,12 @@ const STEP_ICONS = [Waves, SprayCan, Hand, Droplets, Sparkles];
 export function HowToSteps() {
   return (
     <section aria-labelledby="howto-heading" className="mt-6">
-      <div className="flex items-baseline justify-between gap-3">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
         <h2 id="howto-heading" className="text-base font-semibold text-foreground">
           Cum îl folosești
         </h2>
-        <span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
-          <CalendarDays className="size-3.5" aria-hidden />
+        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+          <CalendarDays className="size-3.5 shrink-0" aria-hidden />
           {product.frequency}
         </span>
       </div>
