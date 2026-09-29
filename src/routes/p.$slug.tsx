@@ -137,48 +137,43 @@ function PurchasePanel({ onAdd }: { onAdd: (q: number) => void }) {
   );
 }
 
-function IngredientHighlights() {
+function IngredientChips() {
   const icons = [Droplet, Shield, Sparkles];
   const explanations = new Map(product.keyIngredients.map((ingredient) => [ingredient.name, ingredient.role]));
 
   return (
-    <section aria-labelledby="ingredient-highlights" className="mt-6">
-      <h2 id="ingredient-highlights" className="text-base font-semibold text-foreground">
-        Ingrediente cheie
-      </h2>
-      <ul className="mt-3 grid grid-cols-3 gap-2">
-        {product.ingredientsKey.map((ingredient, index) => {
-          const Icon = icons[index] ?? Droplet;
-          return (
-            <li key={ingredient} className="min-w-0">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    aria-label={`Află mai multe despre ${ingredient}`}
-                    className="h-full min-h-20 w-full min-w-0 whitespace-normal rounded-lg px-2 py-3 shadow-none"
-                  >
-                    <span className="flex min-w-0 flex-col items-center text-center">
-                      <Icon className="size-6 text-primary" strokeWidth={1.5} aria-hidden />
-                      <span className="mt-2 text-[11px] font-medium leading-tight text-foreground sm:text-xs">
-                        {ingredient}
-                      </span>
+    <ul className="grid grid-cols-3 gap-2 sm:gap-3">
+      {product.ingredientsKey.map((ingredient, index) => {
+        const Icon = icons[index] ?? Droplet;
+        return (
+          <li key={ingredient} className="min-w-0">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  aria-label={`Află mai multe despre ${ingredient}`}
+                  className="h-full min-h-20 w-full min-w-0 whitespace-normal rounded-lg px-2 py-3 shadow-none"
+                >
+                  <span className="flex min-w-0 flex-col items-center text-center">
+                    <Icon className="size-6 text-primary" strokeWidth={1.5} aria-hidden />
+                    <span className="mt-2 text-[11px] font-medium leading-tight text-foreground sm:text-xs">
+                      {ingredient}
                     </span>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-64 p-3" side="top">
-                  <p className="text-sm font-semibold text-foreground">{ingredient}</p>
-                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                    {explanations.get(ingredient)}
-                  </p>
-                </PopoverContent>
-              </Popover>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
+                  </span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-64 p-3" side="top">
+                <p className="text-sm font-semibold text-foreground">{ingredient}</p>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  {explanations.get(ingredient)}
+                </p>
+              </PopoverContent>
+            </Popover>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
@@ -197,18 +192,6 @@ function AttributeTags() {
   );
 }
 
-function IngredientsSection() {
-  return (
-    <ul className="grid gap-3 sm:grid-cols-3">
-      {product.keyIngredients.map((ing) => (
-        <li key={ing.name} className="rounded-xl border bg-card p-4">
-          <p className="text-sm font-semibold text-foreground">{ing.name}</p>
-          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{ing.role}</p>
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 function SecondaryDetails() {
   return (
@@ -371,8 +354,6 @@ function ProductPage() {
             </div>
             <AttributeTags />
             <PurchasePanel onAdd={add} />
-            <HowToSteps />
-            <IngredientHighlights />
           </div>
         </div>
 
