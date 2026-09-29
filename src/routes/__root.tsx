@@ -74,6 +74,7 @@ function RootComponent() {
   return (
     <ShopProvider>
       <Outlet />
+      <PostAddToCartDrawer />
       <Toaster position="bottom-left" richColors />
     </ShopProvider>
   );

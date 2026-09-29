@@ -57,7 +57,6 @@ export function EyeProductCard({ product, priority = false }: { product: EyeProd
           <button type="button" onClick={() => {
             if (product.inStock) {
               addToCart({ slug: product.slug, price: product.price });
-              toast.success(`${product.name} a fost adăugat în coș`);
             } else {
               window.location.href = product.slug === localPdpSlug
                 ? `/p/${product.slug}`

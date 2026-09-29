@@ -24,7 +24,7 @@ import {
   HowToSteps,
   faqJsonLd,
 } from "@/components/pdp/ConversionBlocks";
-import { AddedToCartSheet } from "@/components/pdp/AddedToCartSheet";
+import { PostAddToCartDrawer } from "@/components/PostAddToCartDrawer";
 import { RoutineGapCrossSell } from "@/components/pdp/RoutineGap";
 import { QuickMatch } from "@/components/pdp/QuickMatch";
 import { StickyBuyBar } from "@/components/pdp/StickyBuyBar";
