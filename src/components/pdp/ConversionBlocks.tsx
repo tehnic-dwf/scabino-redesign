@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CalendarDays, Droplets, SprayCan, Truck, Waves } from "lucide-react";
+import { CalendarDays, Droplets, Hand, SprayCan, Sparkles, Truck, Waves } from "lucide-react";
 import {
   Accordion,
   AccordionContent,

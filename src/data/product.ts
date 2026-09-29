@@ -329,11 +329,13 @@ export const product = {
   expiry: "12.2028",
   origin: "Coreea de Sud",
   howTo: [
-    { title: "Agită", text: "Agită flaconul câteva secunde." },
-    { title: "Pulverizează", text: "Pe pielea curată și uscată, de la 15 cm." },
-    { title: "Clătește", text: "După 5–10 minute, cu apă călduță." },
+    { title: "Agită recipientul", text: "Agită flaconul câteva secunde." },
+    { title: "Aplică pe pielea uscată", text: "Spray uniform, pe piele uscată." },
+    { title: "Masează ușor zona", text: "Cu mișcări circulare blânde." },
+    { title: "Clătește cu apă călduță", text: "După 5–10 minute." },
+    { title: "Continuă cu o loțiune de corp", text: "Pentru hidratare și confort." },
   ],
-  frequency: "De 1–3 ori pe săptămână",
+  frequency: "Frecvență recomandată de brand: 2× / săptămână",
   reviewHighlights: [
     "Piele mai netedă după primele 2 utilizări",
     "Nu irită, nici pe ten sensibil",
