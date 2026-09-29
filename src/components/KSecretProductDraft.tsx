@@ -262,7 +262,7 @@ function PurchasePanel({ open, onOpen }: { open: boolean; onOpen: () => void }) 
         Momentan indisponibil
         <span className="text-muted-foreground">· Revine în 3–5 zile</span>
       </p>
-      <AuthenticityLine />
+      <AuthenticityLine expiry={null} />
 
       <div className="mt-4 grid grid-cols-[minmax(0,1fr)_2.75rem] gap-2 sm:mt-5 sm:gap-3">
         <Button
