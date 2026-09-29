@@ -94,7 +94,7 @@ export function resolveAddedProduct(slug: string): AddedProductInfo | null {
     return {
       slug: product.slug,
       brand: product.brand,
-      name: product.name.split(",")[0],
+      name: product.name.split(",")[0] ?? product.name,
       price: product.price,
       image: product.images[0] ?? "",
       routineRole: "body-peel",
