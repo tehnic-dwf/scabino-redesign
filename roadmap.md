@@ -13,6 +13,7 @@
 - [ ] 9. Homepage (etapa următoare)
 - [x] 10. Categorie — Creme de ochi coreene (catalog real, filtre și stări de stoc)
 - [x] 10.1. Filtre categorie — model hibrid eMAG + GPeC (maximum 6 opțiuni vizibile, căutare în liste lungi, aplicare/ștergere mai clară)
+- [x] 10.2. Filtre mobile — selecție multiplă cu checkbox, secțiuni inactive închise, opțiuni fără rezultate dezactivate și acțiuni fixe
 - [ ] 11. Coș (etapa următoare)
 - [ ] 12. Checkout (etapa următoare)
 - [ ] 13. Thank you page (etapa următoare)
