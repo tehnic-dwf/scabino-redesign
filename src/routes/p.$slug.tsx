@@ -26,6 +26,7 @@ import {
 } from "@/components/pdp/ConversionBlocks";
 import { AddedToCartSheet } from "@/components/pdp/AddedToCartSheet";
 import { RoutineGapCrossSell } from "@/components/pdp/RoutineGap";
+import { QuickMatch } from "@/components/pdp/QuickMatch";
 import { StickyBuyBar } from "@/components/pdp/StickyBuyBar";
 import {
   Accordion,
@@ -374,6 +375,14 @@ function ProductPage() {
             <IngredientHighlights />
           </div>
         </div>
+
+        <Section
+          id="quick-match"
+          title="Ce produs este"
+          intro="Răspunde la „Ce fel de produs este?” — caracteristicile esențiale, nu beneficiile."
+        >
+          <QuickMatch attributes={product.quickMatch} />
+        </Section>
 
         <Section
           id="verdict"

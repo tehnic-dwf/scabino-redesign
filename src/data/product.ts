@@ -129,7 +129,27 @@ export interface Review {
   cons?: string[];
 }
 
+export interface QuickMatchAttribute {
+  /** cheie de iconiță interpretată de componenta QuickMatch */
+  icon: string;
+  /** eticheta secundară, cu litere mici (randată uppercase) */
+  label: string;
+  /** valoarea principală — mai vizibilă decât label-ul */
+  value: string;
+}
+
+/** Setul se schimbă în funcție de product_type (SPF, serum, cleanser etc.). */
+export const productType = "body-peel" as const;
+
 export const product = {
+  quickMatch: [
+    { icon: "area", label: "Zonă", value: "Corp" },
+    { icon: "concern", label: "Problemă vizată", value: "Textură neuniformă / zone aspre" },
+    { icon: "type", label: "Tip produs", value: "Exfoliant corporal" },
+    { icon: "format", label: "Format", value: "Spray" },
+    { icon: "usage", label: "Utilizare", value: "Se clătește" },
+    { icon: "frequency", label: "Frecvență", value: "2× pe săptămână" },
+  ] as QuickMatchAttribute[],
   slug: "medicube-hypochlorous-acid-body-peel-shot-280-ml",
   brand: "Medicube",
   category: "Exfoliant pentru corp",
