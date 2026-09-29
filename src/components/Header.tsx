@@ -204,6 +204,13 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
+              <Link
+                to="/cosmetice-coreene/creme-de-ochi-coreene"
+                className="border-b border-border/60 py-3 text-sm font-bold text-primary"
+                onClick={() => setMobileOpen(false)}
+              >
+                Vezi toate cremele de ochi coreene
+              </Link>
             </div>
             {categories.map((category) => (
               <Link
