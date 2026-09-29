@@ -147,7 +147,7 @@ function EyeCategoryPage() {
 
       <div className="mt-6 flex items-center justify-between gap-3">
         <Sheet open={filterOpen} onOpenChange={(open) => { setFilterOpen(open); if (open) setDraftFilters(filters); }}>
-          <SheetTrigger asChild><Button variant="outline" className="h-10 gap-2 rounded-full lg:hidden"><SlidersHorizontal className="size-4" />Filtre {count > 0 && <span className="grid size-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">{count}</span>}</Button></SheetTrigger>
+          <SheetTrigger asChild><Button type="button" variant="outline" onClick={() => { setDraftFilters(filters); setFilterOpen(true); }} className="h-10 gap-2 rounded-full lg:hidden"><SlidersHorizontal className="size-4" />Filtre {count > 0 && <span className="grid size-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">{count}</span>}</Button></SheetTrigger>
           <SheetContent side="bottom" className="inset-0 flex h-dvh max-h-none flex-col gap-0 rounded-none border-0 px-5 pb-4 pt-5">
             <SheetHeader className="shrink-0 border-b pb-4 pr-8 text-left"><SheetTitle>Filtre</SheetTitle><SheetDescription>Selectează criteriile potrivite.</SheetDescription></SheetHeader>
             <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"><CategoryFilters filters={draftFilters} products={eyeProducts} onToggle={toggleDraft} onPromo={(promo) => setDraftFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setDraftFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div>
