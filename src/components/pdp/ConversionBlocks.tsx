@@ -79,7 +79,7 @@ const STEP_ICONS = [Waves, SprayCan, Hand, Droplets, Sparkles];
 
 export function HowToSteps() {
   return (
-    <section aria-labelledby="howto-heading" className="mt-6">
+    <section aria-labelledby="howto-heading" className="mt-14">
       <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
         <h2 id="howto-heading" className="text-base font-semibold text-foreground">
           Cum îl folosești
