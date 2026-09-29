@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Ruta `/p/$slug` selectează explicit datele și prezentarea după slug, deoarece fiecare produs din prototip trebuie să aibă conținut propriu.

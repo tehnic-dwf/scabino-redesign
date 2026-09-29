@@ -19,6 +19,18 @@ const topMessages = [
   "Primesti puncte in contul tau la fiecare achizitie",
 ];
 
+const productShortcuts = [
+  {
+    label: "Produs 1 — Medicube Body Peel Shot",
+    slug: "medicube-hypochlorous-acid-body-peel-shot-280-ml",
+  },
+  {
+    label: "Produs 2 — K-Secret Seoul 1988 Eye Cream",
+    slug:
+      "k-secret-seoul-1988-eye-cream-retinal-liposome-4-fermented-bean-crema-anti-rid-cu-retinol-si-extract-fermentat-30ml",
+  },
+] as const;
+
 export function Header() {
   const { cartCount, cartValue, favorites } = useShop();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -180,6 +192,19 @@ export function Header() {
       {mobileOpen && (
         <nav aria-label="Categorii" className="border-b bg-card lg:hidden">
           <div className="mx-auto flex max-w-7xl flex-col px-4 py-2">
+            <div className="border-b border-border pb-2">
+              {productShortcuts.map((item) => (
+                <Link
+                  key={item.slug}
+                  to="/p/$slug"
+                  params={{ slug: item.slug }}
+                  className="flex min-h-11 items-center border-b border-border/60 py-2.5 text-sm font-semibold text-primary last:border-b-0"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
             {categories.map((c) => (
               <Link
                 key={c}
