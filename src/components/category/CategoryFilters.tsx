@@ -111,7 +111,7 @@ export function CategoryFilters({ filters, products, onToggle, onPromo, onPrice 
                   const optionCount = countFor(group.id, value);
                   const disabled = optionCount === 0 && !checked;
                   return <label key={value} className={disabled ? "flex cursor-not-allowed items-center gap-2.5 text-xs leading-tight text-muted-foreground/55" : "flex cursor-pointer items-center gap-2.5 text-xs leading-tight text-foreground/85"}>
-                    <Checkbox checked={checked} disabled={disabled} onCheckedChange={() => onToggle(group.id, value)} aria-label={`${group.title}: ${value}`} />
+                    <Checkbox className="rounded-none" checked={checked} disabled={disabled} onCheckedChange={() => onToggle(group.id, value)} aria-label={`${group.title}: ${value}`} />
                     <span className="min-w-0 flex-1">{value}</span>
                     <span className="text-[10px] text-muted-foreground">{optionCount}</span>
                   </label>;
@@ -144,7 +144,7 @@ export function CategoryFilters({ filters, products, onToggle, onPromo, onPrice 
             {(() => {
               const promoCount = products.filter((p) => p.oldPrice).length;
               const disabled = promoCount === 0 && !filters.promo;
-              return <label className={disabled ? "flex cursor-not-allowed items-center gap-2.5 text-xs text-muted-foreground/55" : "flex cursor-pointer items-center gap-2.5 text-xs"}><Checkbox checked={filters.promo} disabled={disabled} onCheckedChange={(v) => onPromo(v === true)} aria-label="Produse cu preț redus" />Produse cu preț redus <span className="ml-auto text-[10px] text-muted-foreground">{promoCount}</span></label>;
+              return <label className={disabled ? "flex cursor-not-allowed items-center gap-2.5 text-xs text-muted-foreground/55" : "flex cursor-pointer items-center gap-2.5 text-xs"}><Checkbox className="rounded-none" checked={filters.promo} disabled={disabled} onCheckedChange={(v) => onPromo(v === true)} aria-label="Produse cu preț redus" />Produse cu preț redus <span className="ml-auto text-[10px] text-muted-foreground">{promoCount}</span></label>;
             })()}
           </AccordionContent>
         </AccordionItem>
