@@ -138,9 +138,9 @@ function EyeCategoryPage() {
           {concernChoices.map((choice) => {
             const mapped = choice === "Piele sensibilă" ? { field: "skin" as const, value: "Sensibil" } : { field: "concerns" as const, value: choice };
             const selected = filters[mapped.field].includes(mapped.value);
-            return <button key={choice} type="button" aria-pressed={selected} onClick={() => toggle(mapped.field, mapped.value)} className={cn("flex h-10 shrink-0 items-center gap-1.5 rounded-full border px-4 text-xs font-semibold transition-colors", selected ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:border-primary/40")}>
+            return <Button key={choice} type="button" variant={selected ? "default" : "outline"} aria-pressed={selected} onClick={() => toggle(mapped.field, mapped.value)} className={cn("h-10 shrink-0 gap-1.5 rounded-full px-4 text-xs font-semibold", !selected && "bg-card hover:border-primary/40")}>
               {selected && <Check className="size-3.5" />}{choice}
-            </button>;
+            </Button>;
           })}
         </div>
       </section>
@@ -171,14 +171,14 @@ function EyeCategoryPage() {
       </div>
 
       {(active.length > 0 || filters.promo || filters.minPrice > 0 || filters.maxPrice < 260) && <div className="mt-4 flex flex-wrap items-center gap-2">
-        {active.map(({ field, value }) => <button key={`${field}-${value}`} type="button" onClick={() => removeChip(field, value)} className="flex items-center gap-1 rounded-full bg-secondary/65 px-3 py-1.5 text-[10px] font-semibold text-primary">{value}<X className="size-3" /></button>)}
-        {filters.promo && <button type="button" onClick={() => removeChip("promo")} className="flex items-center gap-1 rounded-full bg-secondary/65 px-3 py-1.5 text-[10px] font-semibold text-primary">Promoții<X className="size-3" /></button>}
-        {(filters.minPrice > 0 || filters.maxPrice < 260) && <button type="button" onClick={() => removeChip("price")} className="flex items-center gap-1 rounded-full bg-secondary/65 px-3 py-1.5 text-[10px] font-semibold text-primary">{filters.minPrice}–{filters.maxPrice} lei<X className="size-3" /></button>}
+        {active.map(({ field, value }) => <Button key={`${field}-${value}`} type="button" variant="secondary" onClick={() => removeChip(field, value)} className="h-auto gap-1 rounded-full px-3 py-1.5 text-[10px] font-semibold text-primary">{value}<X className="size-3" /></Button>)}
+        {filters.promo && <Button type="button" variant="secondary" onClick={() => removeChip("promo")} className="h-auto gap-1 rounded-full px-3 py-1.5 text-[10px] font-semibold text-primary">Promoții<X className="size-3" /></Button>}
+        {(filters.minPrice > 0 || filters.maxPrice < 260) && <Button type="button" variant="secondary" onClick={() => removeChip("price")} className="h-auto gap-1 rounded-full px-3 py-1.5 text-[10px] font-semibold text-primary">{filters.minPrice}–{filters.maxPrice} lei<X className="size-3" /></Button>}
         <Button type="button" variant="link" onClick={reset} className="h-auto px-2 py-1 text-[10px] font-semibold text-muted-foreground underline underline-offset-4">Șterge toate</Button>
       </div>}
 
       <div className="mt-7 grid min-w-0 gap-8 lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[245px_minmax(0,1fr)]">
-        <aside className="hidden lg:block"><div className="sticky top-44 rounded-2xl border bg-card px-4 py-1"><div className="flex items-center justify-between border-b py-4"><span className="text-sm font-bold">Filtre</span>{count > 0 && <button onClick={reset} className="text-[10px] font-semibold text-muted-foreground underline">Șterge</button>}</div><CategoryFilters filters={filters} products={eyeProducts} onToggle={toggle} onPromo={(promo) => setFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div></aside>
+        <aside className="hidden lg:block"><div className="sticky top-44 rounded-2xl border bg-card px-4 py-1"><div className="flex items-center justify-between border-b py-4"><span className="text-sm font-bold">Filtre</span>{count > 0 && <Button variant="link" onClick={reset} className="h-auto p-0 text-[10px] font-semibold text-muted-foreground underline">Șterge</Button>}</div><CategoryFilters filters={filters} products={eyeProducts} onToggle={toggle} onPromo={(promo) => setFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div></aside>
 
         <section aria-label="Produse" className="min-w-0">
           {filtered.length > 0 ? <>
