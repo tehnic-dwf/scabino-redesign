@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart, ShoppingBag, type LucideIcon } from "lucide-react";
 import { useShop } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/data/product";
@@ -9,12 +9,17 @@ export function StickyBuyBar({
   price,
   onAdd,
   slug,
+  ctaLabel = "Adaugă în coș",
+  ctaIcon,
 }: {
   title: string;
   price: number;
   onAdd: () => void;
   slug?: string;
+  ctaLabel?: string;
+  ctaIcon?: LucideIcon;
 }) {
+  const CtaIcon = ctaIcon ?? ShoppingBag;
   const { favorites, toggleFavorite } = useShop();
   const fav = slug ? favorites.includes(slug) : false;
   const [visible, setVisible] = useState(false);
@@ -67,8 +72,8 @@ export function StickyBuyBar({
           tabIndex={visible ? 0 : -1}
           className="h-10 min-w-0 flex-1 rounded-lg bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90 sm:h-11 sm:w-auto sm:flex-none sm:px-8"
         >
-          <ShoppingBag className="size-4" aria-hidden />
-          Adaugă în coș
+          <CtaIcon className="size-4" aria-hidden />
+          {ctaLabel}
         </Button>
         </div>
       </div>

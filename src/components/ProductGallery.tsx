@@ -34,7 +34,11 @@ function VideoPlaceholder({ poster, large }: { poster: string; large?: boolean }
   );
 }
 
-export function ProductGallery() {
+export function ProductGallery({
+  images,
+  withVideo = true,
+  alt,
+}: { images?: string[]; withVideo?: boolean; alt?: string } = {}) {
   const [active, setActive] = useState(0);
   const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -47,11 +51,11 @@ export function ProductGallery() {
     });
   };
 
-  const imgs = product.images as string[];
+  const imgs = images ?? (product.images as string[]);
   const first = imgs[0] ?? "";
   const slides: Slide[] = [
     { type: "image", src: first },
-    { type: "video", poster: imgs[1] ?? first },
+    ...(withVideo ? [{ type: "video" as const, poster: imgs[1] ?? first }] : []),
     ...imgs.slice(1).map((src) => ({ type: "image" as const, src })),
   ];
   const current = slides[active] ?? slides[0]!;
@@ -62,7 +66,7 @@ export function ProductGallery() {
         {current.type === "image" ? (
           <img
             src={current.src}
-            alt={`${product.brand} ${product.name}`}
+            alt={alt ?? `${product.brand} ${product.name}`}
             className="size-full bg-white object-contain"
           />
         ) : (

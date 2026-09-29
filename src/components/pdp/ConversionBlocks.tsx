@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { LucideIcon } from "lucide-react";
 import { CalendarDays, Droplets, Hand, SprayCan, Sparkles, Truck, Waves } from "lucide-react";
 import {
   Accordion,
@@ -27,12 +28,12 @@ function KoreaFlag({ className }: { className?: string }) {
   );
 }
 
-export function AuthenticityLine() {
+export function AuthenticityLine({ expiry = product.expiry }: { expiry?: string | null } = {}) {
   return (
     <p className="mt-3 rounded-lg bg-muted/60 px-3 py-2 text-xs leading-relaxed text-foreground/85">
       <KoreaFlag className="mt-1 mr-2 mb-0.5 float-left h-6 w-9 rounded-[3px] ring-1 ring-black/15" />
       <strong className="font-semibold">Produs original</strong>, importat din {product.origin} · lot
-      și valabilitate verificate · valabil până la {product.expiry}
+      și valabilitate verificate{expiry ? ` · valabil până la ${expiry}` : ""}
     </p>
   );
 }
@@ -77,7 +78,15 @@ export function DeliveryEstimate() {
 
 const STEP_ICONS = [Waves, SprayCan, Hand, Droplets, Sparkles];
 
-export function HowToSteps() {
+export function HowToSteps({
+  steps = product.howTo,
+  frequency = product.frequency,
+  icons,
+}: {
+  steps?: { title: string; text: string }[];
+  frequency?: string;
+  icons?: LucideIcon[];
+} = {}) {
   return (
     <section aria-labelledby="howto-heading" className="mt-14">
       <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
@@ -86,12 +95,12 @@ export function HowToSteps() {
         </h2>
         <span className="flex items-center gap-1 text-xs text-muted-foreground">
           <CalendarDays className="size-3.5 shrink-0" aria-hidden />
-          {product.frequency}
+          {frequency}
         </span>
       </div>
       <ol className="mt-3 grid grid-cols-6 gap-2 sm:grid-cols-5">
-        {product.howTo.map((s, i) => {
-          const Icon = STEP_ICONS[i] ?? Waves;
+        {steps.map((s, i) => {
+          const Icon = (icons ?? STEP_ICONS)[i] ?? Waves;
           const placement =
             i < 3 ? "col-span-2" : i === 3 ? "col-span-2 col-start-2 sm:col-span-1 sm:col-start-auto" : "col-span-2 sm:col-span-1";
           return (

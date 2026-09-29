@@ -61,17 +61,24 @@ export function FitNonFit({
   fit,
   nonFit,
   alternative,
+  fitTitle = "Alege-l dacă",
+  nonFitTitle = "Probabil nu dacă",
+  footnote,
 }: {
   fit: string[];
   nonFit: string[];
   alternative?: { label: string; to: string };
+  fitTitle?: string;
+  nonFitTitle?: string;
+  footnote?: string;
 }) {
   return (
+    <div>
     <div className="grid gap-4 md:grid-cols-2">
       <div className="rounded-2xl border border-fit-border bg-fit-soft p-5 sm:p-6">
         <h3 className="flex items-center gap-2 text-sm font-semibold text-fit">
           <Check className="size-4" aria-hidden />
-          Alege-l dacă
+          {fitTitle}
         </h3>
         <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-foreground/85">
           {fit.map((f) => (
@@ -85,7 +92,7 @@ export function FitNonFit({
       <div className="rounded-2xl border border-caution-border bg-caution-soft p-5 sm:p-6">
         <h3 className="flex items-center gap-2 text-sm font-semibold text-caution">
           <CircleAlert className="size-4" aria-hidden />
-          Probabil nu dacă
+          {nonFitTitle}
         </h3>
         <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-foreground/85">
           {nonFit.map((f) => (
@@ -102,6 +109,8 @@ export function FitNonFit({
           </p>
         )}
       </div>
+    </div>
+    {footnote && <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{footnote}</p>}
     </div>
   );
 }
