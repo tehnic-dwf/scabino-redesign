@@ -66,7 +66,7 @@ export function ProductGallery({
         {current.type === "image" ? (
           <img
             src={current.src}
-            alt={`${product.brand} ${product.name}`}
+            alt={alt ?? `${product.brand} ${product.name}`}
             className="size-full bg-white object-contain"
           />
         ) : (
