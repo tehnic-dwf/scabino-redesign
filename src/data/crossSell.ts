@@ -127,7 +127,7 @@ export function resolveAddedProduct(slug: string): AddedProductInfo | null {
   }
   const cross = crossSellCatalog.find((p) => p.slug === slug);
   if (cross) {
-    return { ...cross, oldPrice: undefined };
+    return { ...cross };
   }
   return null;
 }
