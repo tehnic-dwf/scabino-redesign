@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CalendarDays, Droplets, SprayCan, Truck, Waves } from "lucide-react";
+import { CalendarDays, Droplets, Hand, SprayCan, Sparkles, Truck, Waves } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -75,25 +75,27 @@ export function DeliveryEstimate() {
   );
 }
 
-const STEP_ICONS = [Waves, SprayCan, Droplets];
+const STEP_ICONS = [Waves, SprayCan, Hand, Droplets, Sparkles];
 
 export function HowToSteps() {
   return (
     <section aria-labelledby="howto-heading" className="mt-6">
-      <div className="flex items-baseline justify-between gap-3">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
         <h2 id="howto-heading" className="text-base font-semibold text-foreground">
-          Cum se folosește
+          Cum îl folosești
         </h2>
         <span className="flex items-center gap-1 text-xs text-muted-foreground">
-          <CalendarDays className="size-3.5" aria-hidden />
+          <CalendarDays className="size-3.5 shrink-0" aria-hidden />
           {product.frequency}
         </span>
       </div>
-      <ol className="mt-3 grid grid-cols-3 gap-2">
+      <ol className="mt-3 grid grid-cols-6 gap-2 sm:grid-cols-5">
         {product.howTo.map((s, i) => {
           const Icon = STEP_ICONS[i] ?? Waves;
+          const placement =
+            i < 3 ? "col-span-2" : i === 3 ? "col-span-2 col-start-2 sm:col-span-1 sm:col-start-auto" : "col-span-2 sm:col-span-1";
           return (
-            <li key={s.title} className="min-w-0 rounded-lg border bg-card p-2.5 text-center">
+            <li key={s.title} className={`min-w-0 rounded-lg border bg-card p-2.5 text-center ${placement}`}>
               <span className="mx-auto flex size-9 items-center justify-center rounded-full bg-accent text-primary">
                 <Icon className="size-4.5" strokeWidth={1.6} aria-hidden />
               </span>
