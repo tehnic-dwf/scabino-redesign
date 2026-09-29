@@ -3,6 +3,7 @@ import type { QueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { Toaster } from "sonner";
 import { ShopProvider } from "@/lib/store";
+import { PostAddToCartDrawer } from "@/components/PostAddToCartDrawer";
 
 import appCss from "@/styles.css?url";
 
@@ -74,6 +75,7 @@ function RootComponent() {
   return (
     <ShopProvider>
       <Outlet />
+      <PostAddToCartDrawer />
       <Toaster position="bottom-left" richColors />
     </ShopProvider>
   );

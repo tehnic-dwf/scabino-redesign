@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { BellRing, Heart, ShoppingBag, Star } from "lucide-react";
-import { toast } from "sonner";
 import { formatPrice } from "@/data/product";
 import type { EyeProduct } from "@/data/eyeCategory";
 import { useShop } from "@/lib/store";
@@ -57,7 +56,6 @@ export function EyeProductCard({ product, priority = false }: { product: EyeProd
           <button type="button" onClick={() => {
             if (product.inStock) {
               addToCart({ slug: product.slug, price: product.price });
-              toast.success(`${product.name} a fost adăugat în coș`);
             } else {
               window.location.href = product.slug === localPdpSlug
                 ? `/p/${product.slug}`

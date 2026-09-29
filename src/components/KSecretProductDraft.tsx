@@ -137,6 +137,7 @@ const alternatives = [
     name: "Revive Eye Serum: Ginseng + Retinal",
     subtitle: "Ser pentru ochi, 30 ml",
     price: 79.99,
+    slug: "beauty-of-joseon-revive-eye-serum-ginseng-retinal-ser-antirid-pentru-ochi-30ml",
     image: altBoj.url,
     why: "vrei tot un retinoid pentru conturul ochilor, într-o textură de ser mai lejeră.",
   },
@@ -145,6 +146,7 @@ const alternatives = [
     name: "Black Rice Bakuchiol Eye Cream",
     subtitle: "Cremă de ochi, 20 ml",
     price: 91.99,
+    slug: "haruharu-wonder-black-rice-bakuchiol-eye-cream",
     image: altHaru.url,
     why: "preferi să eviți retinoizii și cauți o alternativă mai blândă, cu bakuchiol.",
   },
@@ -153,6 +155,7 @@ const alternatives = [
     name: "PDRN Pink Peptide Eye Cream",
     subtitle: "Cremă de ochi, 30 ml",
     price: 83.99,
+    slug: "medicube-pdrn-pink-peptide-eye-cream-30ml-crema-de-ochi-regeneranta-cu-pdrn-si-peptide-pentru-reducerea-cearcanelor-si-ridurilor",
     image: altPdrn.url,
     why: "prioritatea ta sunt cearcănele și fermitatea, cu peptide în loc de retinal.",
   },
@@ -528,8 +531,7 @@ function Alternatives() {
                   variant="outline"
                   className="h-8 rounded-lg text-xs"
                   onClick={() => {
-                    addToCart({ slug: a.name, price: a.price }, 1);
-                    toast.success(`${a.brand} ${a.name} a fost adăugat în coș`);
+                    addToCart({ slug: a.slug, price: a.price }, 1);
                   }}
                 >
                   Adaugă
