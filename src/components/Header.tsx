@@ -5,14 +5,14 @@ import { formatPrice, shipping } from "@/data/product";
 import { useShop } from "@/lib/store";
 
 const categories = [
-  "Cosmetice Coreene",
-  "Produse de îngrijire orala",
-  "Produse de îngrijire a corpului",
-  "Produse de machiaj",
-  "Produse cosmetice pentru ten",
-  "Protectie Solara",
-  "Produse pentru bărbați",
-];
+  { label: "Cosmetice Coreene", to: "/cosmetice-coreene/creme-de-ochi-coreene" },
+  { label: "Produse de îngrijire orala", to: "/" },
+  { label: "Produse de îngrijire a corpului", to: "/" },
+  { label: "Produse de machiaj", to: "/" },
+  { label: "Produse cosmetice pentru ten", to: "/" },
+  { label: "Protectie Solara", to: "/" },
+  { label: "Produse pentru bărbați", to: "/" },
+] as const;
 
 const topMessages = [
   `Livrare gratuita de la ${shipping.freeFrom} RON`,
@@ -163,13 +163,13 @@ export function Header() {
           aria-label="Categorii"
           className="mx-auto hidden max-w-7xl items-center gap-5 px-4 pb-4 lg:flex xl:gap-7"
         >
-          {categories.map((c) => (
+          {categories.map((category) => (
             <Link
-              key={c}
-              to="/"
+              key={category.label}
+              to={category.to}
               className="text-sm font-bold text-primary transition-opacity hover:opacity-70 xl:text-[15px]"
             >
-              {c}
+              {category.label}
             </Link>
           ))}
           <Link
@@ -205,14 +205,14 @@ export function Header() {
                 </Link>
               ))}
             </div>
-            {categories.map((c) => (
+            {categories.map((category) => (
               <Link
-                key={c}
-                to="/"
+                key={category.label}
+                to={category.to}
                 className="border-b border-border/60 py-3 text-sm font-bold text-primary"
                 onClick={() => setMobileOpen(false)}
               >
-                {c}
+                {category.label}
               </Link>
             ))}
             <Link
