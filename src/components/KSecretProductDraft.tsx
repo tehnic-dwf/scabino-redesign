@@ -73,14 +73,11 @@ const quickMatch: QuickMatchAttribute[] = [
 ];
 
 const verdict: [string, string][] = [
-  [
-    "Pe scurt",
-    "Cremă pentru conturul ochilor construită în jurul Retinal Liposome 4% și ingredientelor fermentate, orientată spre riduri fine, pigmentare și textură neuniformă.",
-  ],
-  [
-    "De știut",
-    "Retinalul este un activ pe care merită să îl introduci progresiv în rutină, mai ales dacă nu folosești deja produse cu retinoizi.",
-  ],
+  ["Rol principal", "Anti-rid + fermitate (retinal)"],
+  ["Textură", "Cremă bogată, se așterne ușor"],
+  ["Finish", "Se absoarbe, nu lasă film — merge și sub concealer"],
+  ["Când", "Doar seara, introdus treptat în rutină"],
+  ["Nivel rutină", "Intermediar — cere protecție SPF dimineața"],
 ];
 
 const fit = [
