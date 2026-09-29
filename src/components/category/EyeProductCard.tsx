@@ -59,7 +59,9 @@ export function EyeProductCard({ product, priority = false }: { product: EyeProd
               addToCart({ slug: product.slug, price: product.price });
               toast.success(`${product.name} a fost adăugat în coș`);
             } else {
-              toast.success("Deschidem opțiunea de notificare pe pagina produsului");
+              window.location.href = product.slug === localPdpSlug
+                ? `/p/${product.slug}`
+                : `https://www.scabino.ro/p/creme-de-ochi-coreene/${product.slug}/`;
             }
           }} className={cn("mt-1 flex h-10 w-full items-center justify-center gap-2 rounded-full px-2 text-[11px] font-semibold transition-colors sm:text-xs", product.inStock ? "bg-primary text-primary-foreground hover:bg-primary/90" : "border border-primary bg-background text-primary hover:bg-secondary/55")}>
             {product.inStock ? <ShoppingBag className="size-3.5" /> : <BellRing className="size-3.5" />}
