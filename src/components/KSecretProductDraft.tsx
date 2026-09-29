@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import imageAsset from "@/assets/scabino/k-secret-seoul-1988-eye-cream.webp.asset.json";
 
 export const kSecretProduct = {
-  slug: "k-secret-seoul-1988-eye-cream-retinal-liposome-4-fermented-bean",
+  slug:
+    "k-secret-seoul-1988-eye-cream-retinal-liposome-4-fermented-bean-crema-anti-rid-cu-retinol-si-extract-fermentat-30ml",
   brand: "K-Secret",
   name: "Seoul 1988 Eye Cream Retinal Liposome 4% + Fermented Bean",
   subtitle: "Cremă pentru conturul ochilor revitalizantă, 30 ml",
