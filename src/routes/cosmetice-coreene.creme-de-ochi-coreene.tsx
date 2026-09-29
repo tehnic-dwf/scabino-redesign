@@ -34,7 +34,6 @@ type FilterArrayKey = "concerns" | "ingredients" | "types" | "brands" | "skin" |
 type SortKey = "recommended" | "popular" | "rating" | "price-asc" | "price-desc" | "discount" | "newest";
 
 function readUrlState() {
-  if (typeof window === "undefined") return { filters: emptyFilters, sort: "recommended" as SortKey };
   const params = new URLSearchParams(window.location.search);
   const list = (key: string) => params.get(key)?.split("|").filter(Boolean) ?? [];
   return {
@@ -75,17 +74,26 @@ function sortProducts(items: EyeProduct[], sort: SortKey) {
 }
 
 function EyeCategoryPage() {
-  const initial = useMemo(readUrlState, []);
-  const [filters, setFilters] = useState<CategoryFilterState>(initial.filters);
-  const [draftFilters, setDraftFilters] = useState<CategoryFilterState>(initial.filters);
-  const [sort, setSort] = useState<SortKey>(initial.sort);
+  const [filters, setFilters] = useState<CategoryFilterState>(emptyFilters);
+  const [draftFilters, setDraftFilters] = useState<CategoryFilterState>(emptyFilters);
+  const [sort, setSort] = useState<SortKey>("recommended");
   const [visible, setVisible] = useState(12);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [urlStateReady, setUrlStateReady] = useState(false);
 
   const filtered = useMemo(() => sortProducts(eyeProducts.filter((p) => matches(p, filters)), sort), [filters, sort]);
   const count = activeCount(filters);
 
   useEffect(() => {
+    const initial = readUrlState();
+    setFilters(initial.filters);
+    setDraftFilters(initial.filters);
+    setSort(initial.sort);
+    setUrlStateReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!urlStateReady) return;
     const params = new URLSearchParams();
     const put = (key: string, values: string[]) => { if (values.length) params.set(key, values.join("|")); };
     put("concern", filters.concerns); put("ingredient", filters.ingredients); put("type", filters.types); put("brand", filters.brands); put("skin", filters.skin); put("stock", filters.availability);
@@ -95,7 +103,7 @@ function EyeCategoryPage() {
     if (sort !== "recommended") params.set("sort", sort);
     window.history.replaceState({}, "", `${window.location.pathname}${params.size ? `?${params}` : ""}`);
     setVisible(12);
-  }, [filters, sort]);
+  }, [filters, sort, urlStateReady]);
 
   const mutate = (source: CategoryFilterState, field: FilterArrayKey, value: string) => ({
     ...source,
@@ -154,20 +162,20 @@ function EyeCategoryPage() {
               ...(draftFilters.promo ? [{ key: "promo", label: "Promoții", clear: () => setDraftFilters((f) => ({ ...f, promo: false })) }] : []),
               ...((draftFilters.minPrice > 0 || draftFilters.maxPrice < 260) ? [{ key: "price", label: `${draftFilters.minPrice}–${draftFilters.maxPrice} lei`, clear: () => setDraftFilters((f) => ({ ...f, minPrice: 0, maxPrice: 260 })) }] : []),
             ];
-            return <div role="dialog" aria-modal="true" aria-labelledby="mobile-filter-title" className="fixed inset-0 z-50 flex h-dvh flex-col bg-background px-5 pb-4 pt-3 lg:hidden">
-              <div className="grid shrink-0 grid-cols-[auto_1fr_auto] items-center gap-2 border-b pb-3">
+            return <div role="dialog" aria-modal="true" aria-labelledby="mobile-filter-title" className="fixed inset-0 z-50 flex h-dvh flex-col overflow-hidden bg-background lg:hidden">
+              <div className="sticky top-0 z-10 grid shrink-0 grid-cols-[auto_1fr_auto] items-center gap-2 border-b bg-background px-5 pb-3 pt-3">
                 <Button type="button" variant="ghost" size="icon" aria-label="Închide filtrele" onClick={() => setFilterOpen(false)}><X className="size-5" /></Button>
                 <h2 id="mobile-filter-title" className="text-center text-xl font-bold text-primary">Filtre</h2>
                 <Button type="button" variant="ghost" onClick={() => setDraftFilters(emptyFilters)} className="h-auto gap-1.5 px-1 py-1 text-sm font-semibold text-primary hover:bg-transparent hover:text-primary/80"><RotateCcw className="size-4" />Resetează</Button>
               </div>
-              {draftChips.length > 0 && <div className="flex shrink-0 flex-wrap gap-2 border-b py-3">
+              {draftChips.length > 0 && <div className="flex shrink-0 flex-wrap gap-2 border-b px-5 py-3">
                 {draftChips.map((chip) => <button key={chip.key} type="button" onClick={chip.clear} className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2 text-[13px] font-medium text-foreground/90 transition-colors hover:bg-muted/70">
                   {chip.label}<X className="size-3.5 text-foreground/60" aria-hidden />
                   <span className="sr-only">elimină filtrul</span>
                 </button>)}
               </div>}
-              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"><CategoryFilters filters={draftFilters} products={eyeProducts} onToggle={toggleDraft} onPromo={(promo) => setDraftFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setDraftFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div>
-              <div className="shrink-0 border-t bg-background pt-4">
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"><CategoryFilters filters={draftFilters} products={eyeProducts} onToggle={toggleDraft} onPromo={(promo) => setDraftFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setDraftFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div>
+              <div className="sticky bottom-0 z-10 shrink-0 border-t bg-background px-5 pb-4 pt-4">
                 <Button className="h-12 w-full text-sm font-semibold" onClick={() => { setFilters(draftFilters); setFilterOpen(false); }}>Vezi {draftResultCount} {draftResultCount === 1 ? "produs" : "produse"}</Button>
               </div>
             </div>;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
@@ -41,6 +41,24 @@ export function CategoryFilters({ filters, products, onToggle, onPromo, onPrice 
     { id: "availability" as const, title: "Disponibilitate", values: ["În stoc", "Indisponibil"] },
   ];
 
+  const activeSections = [
+    ...groups.filter((group) => filters[group.id].length > 0).map((group) => group.id),
+    ...(filters.minPrice > 0 || filters.maxPrice < 260 ? ["price"] : []),
+    ...(filters.promo ? ["promo"] : []),
+  ];
+  const activeSectionKey = activeSections.join("|");
+  const previousActiveSections = useRef<string[]>([]);
+  const [openSections, setOpenSections] = useState<string[]>(activeSections);
+
+  useEffect(() => {
+    const previous = previousActiveSections.current;
+    setOpenSections((current) => {
+      const withoutDeactivated = current.filter((section) => activeSections.includes(section) || !previous.includes(section));
+      return [...new Set([...withoutDeactivated, ...activeSections])];
+    });
+    previousActiveSections.current = activeSections;
+  }, [activeSectionKey]);
+
   const countFor = (field: typeof groups[number]["id"], value: string) => products.filter((product) => {
     const includesAny = (selected: string[], values: string[]) => !selected.length || selected.some((item) => values.includes(item));
     const optionMatches = field === "availability"
@@ -64,7 +82,7 @@ export function CategoryFilters({ filters, products, onToggle, onPromo, onPrice 
 
   return (
     <div className="min-w-0">
-      <Accordion type="multiple" defaultValue={["concerns", "ingredients", "types", "availability", "price"]}>
+      <Accordion type="multiple" value={openSections} onValueChange={setOpenSections}>
         {groups.map((group) => {
           const query = queries[group.id] ?? "";
           const sortedValues = [...group.values].sort((a, b) => Number(filters[group.id].includes(b)) - Number(filters[group.id].includes(a)) || a.localeCompare(b, "ro"));
@@ -90,10 +108,12 @@ export function CategoryFilters({ filters, products, onToggle, onPromo, onPrice 
               <div className="space-y-2.5">
                 {visibleValues.map((value) => {
                   const checked = filters[group.id].includes(value);
-                  return <label key={value} className="flex cursor-pointer items-center gap-2.5 text-xs leading-tight text-foreground/85">
-                    <Checkbox checked={checked} onCheckedChange={() => onToggle(group.id, value)} />
+                  const optionCount = countFor(group.id, value);
+                  const disabled = optionCount === 0 && !checked;
+                  return <label key={value} className={disabled ? "flex cursor-not-allowed items-center gap-2.5 text-xs leading-tight text-muted-foreground/55" : "flex cursor-pointer items-center gap-2.5 text-xs leading-tight text-foreground/85"}>
+                    <Checkbox className="rounded-none" checked={checked} disabled={disabled} onCheckedChange={() => onToggle(group.id, value)} aria-label={`${group.title}: ${value}`} />
                     <span className="min-w-0 flex-1">{value}</span>
-                    <span className="text-[10px] text-muted-foreground">{countFor(group.id, value)}</span>
+                    <span className="text-[10px] text-muted-foreground">{optionCount}</span>
                   </label>;
                 })}
                 {matchingValues.length === 0 && <p className="py-1 text-xs text-muted-foreground">Nicio opțiune găsită.</p>}
@@ -121,7 +141,11 @@ export function CategoryFilters({ filters, products, onToggle, onPromo, onPrice 
         <AccordionItem value="promo">
           <AccordionTrigger className="text-[13px] font-semibold no-underline hover:no-underline">Promoții</AccordionTrigger>
           <AccordionContent>
-            <label className="flex cursor-pointer items-center gap-2.5 text-xs"><Checkbox checked={filters.promo} onCheckedChange={(v) => onPromo(v === true)} />Produse cu preț redus <span className="ml-auto text-[10px] text-muted-foreground">{products.filter((p) => p.oldPrice).length}</span></label>
+            {(() => {
+              const promoCount = products.filter((p) => p.oldPrice).length;
+              const disabled = promoCount === 0 && !filters.promo;
+              return <label className={disabled ? "flex cursor-not-allowed items-center gap-2.5 text-xs text-muted-foreground/55" : "flex cursor-pointer items-center gap-2.5 text-xs"}><Checkbox className="rounded-none" checked={filters.promo} disabled={disabled} onCheckedChange={(v) => onPromo(v === true)} aria-label="Produse cu preț redus" />Produse cu preț redus <span className="ml-auto text-[10px] text-muted-foreground">{promoCount}</span></label>;
+            })()}
           </AccordionContent>
         </AccordionItem>
       </Accordion>
