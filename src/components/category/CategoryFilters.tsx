@@ -1,4 +1,7 @@
+import { useState } from "react";
+import { Search } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { EyeProduct } from "@/data/eyeCategory";
 
@@ -27,6 +30,8 @@ function unique(products: EyeProduct[], getter: (p: EyeProduct) => string[]) {
 }
 
 export function CategoryFilters({ filters, products, onToggle, onPromo, onPrice }: Props) {
+  const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
+  const [queries, setQueries] = useState<Record<string, string>>({});
   const groups = [
     { id: "concerns" as const, title: "Concern principal", values: unique(products, (p) => p.concerns) },
     { id: "ingredients" as const, title: "Ingredient activ", values: unique(products, (p) => p.ingredients) },
@@ -36,23 +41,54 @@ export function CategoryFilters({ filters, products, onToggle, onPromo, onPrice 
     { id: "availability" as const, title: "Disponibilitate", values: ["În stoc", "Indisponibil"] },
   ];
 
-  const countFor = (field: typeof groups[number]["id"], value: string) => products.filter((p) => {
-    if (field === "availability") return value === "În stoc" ? p.inStock : !p.inStock;
-    if (field === "brands") return p.brand === value;
-    if (field === "types") return p.type === value;
-    if (field === "skin") return p.skin === value;
-    return p[field].includes(value);
+  const countFor = (field: typeof groups[number]["id"], value: string) => products.filter((product) => {
+    const includesAny = (selected: string[], values: string[]) => !selected.length || selected.some((item) => values.includes(item));
+    const optionMatches = field === "availability"
+      ? (value === "În stoc" ? product.inStock : !product.inStock)
+      : field === "brands" ? product.brand === value
+        : field === "types" ? product.type === value
+          : field === "skin" ? product.skin === value
+            : product[field].includes(value);
+
+    return optionMatches
+      && (field === "concerns" || includesAny(filters.concerns, product.concerns))
+      && (field === "ingredients" || includesAny(filters.ingredients, product.ingredients))
+      && (field === "types" || includesAny(filters.types, [product.type]))
+      && (field === "brands" || includesAny(filters.brands, [product.brand]))
+      && (field === "skin" || includesAny(filters.skin, [product.skin]))
+      && (field === "availability" || includesAny(filters.availability, [product.inStock ? "În stoc" : "Indisponibil"]))
+      && (!filters.promo || Boolean(product.oldPrice))
+      && product.price >= filters.minPrice
+      && product.price <= filters.maxPrice;
   }).length;
 
   return (
     <div className="min-w-0">
       <Accordion type="multiple" defaultValue={["concerns", "ingredients", "types", "availability", "price"]}>
-        {groups.map((group) => (
-          <AccordionItem value={group.id} key={group.id}>
+        {groups.map((group) => {
+          const query = queries[group.id] ?? "";
+          const sortedValues = [...group.values].sort((a, b) => Number(filters[group.id].includes(b)) - Number(filters[group.id].includes(a)) || a.localeCompare(b, "ro"));
+          const matchingValues = sortedValues.filter((value) => value.toLocaleLowerCase("ro").includes(query.trim().toLocaleLowerCase("ro")));
+          const expanded = expandedGroups.includes(group.id);
+          const visibleValues = expanded || query ? matchingValues : matchingValues.slice(0, 6);
+          const isSearchable = (group.id === "brands" || group.id === "ingredients") && group.values.length > 6;
+
+          return <AccordionItem value={group.id} key={group.id}>
             <AccordionTrigger className="text-[13px] font-semibold no-underline hover:no-underline">{group.title}</AccordionTrigger>
             <AccordionContent>
+              {isSearchable && <label className="relative mb-3 block">
+                <span className="sr-only">Caută în {group.title.toLocaleLowerCase("ro")}</span>
+                <Search className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQueries((current) => ({ ...current, [group.id]: event.target.value }))}
+                  placeholder={`Caută ${group.title.toLocaleLowerCase("ro")}`}
+                  className="h-9 w-full rounded-md border bg-background pl-9 pr-3 text-xs text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
+                />
+              </label>}
               <div className="space-y-2.5">
-                {group.values.map((value) => {
+                {visibleValues.map((value) => {
                   const checked = filters[group.id].includes(value);
                   return <label key={value} className="flex cursor-pointer items-center gap-2.5 text-xs leading-tight text-foreground/85">
                     <Checkbox checked={checked} onCheckedChange={() => onToggle(group.id, value)} />
@@ -60,10 +96,19 @@ export function CategoryFilters({ filters, products, onToggle, onPromo, onPrice 
                     <span className="text-[10px] text-muted-foreground">{countFor(group.id, value)}</span>
                   </label>;
                 })}
+                {matchingValues.length === 0 && <p className="py-1 text-xs text-muted-foreground">Nicio opțiune găsită.</p>}
               </div>
+              {!query && matchingValues.length > 6 && <Button
+                type="button"
+                variant="link"
+                className="mt-3 h-auto p-0 text-xs font-semibold text-primary"
+                onClick={() => setExpandedGroups((current) => expanded ? current.filter((id) => id !== group.id) : [...current, group.id])}
+              >
+                {expanded ? "Vezi mai puține" : `Vezi mai multe (${matchingValues.length - 6})`}
+              </Button>}
             </AccordionContent>
           </AccordionItem>
-        ))}
+        })}
         <AccordionItem value="price">
           <AccordionTrigger className="text-[13px] font-semibold no-underline hover:no-underline">Preț</AccordionTrigger>
           <AccordionContent>

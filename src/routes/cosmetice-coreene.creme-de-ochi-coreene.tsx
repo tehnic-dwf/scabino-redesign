@@ -8,7 +8,6 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { EyeProductCard } from "@/components/category/EyeProductCard";
 import { CategoryFilters, type CategoryFilterState } from "@/components/category/CategoryFilters";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { concernChoices, eyeProducts, type EyeProduct } from "@/data/eyeCategory";
 import { cn } from "@/lib/utils";
@@ -18,6 +17,10 @@ export const Route = createFileRoute("/cosmetice-coreene/creme-de-ochi-coreene")
     meta: [
       { title: "Creme de ochi coreene | Scabino" },
       { name: "description", content: "Creme, seruri și plasturi coreeni pentru conturul ochilor, selectați după nevoie, ingrediente și tipul de ten." },
+      { property: "og:title", content: "Creme de ochi coreene | Scabino" },
+      { property: "og:description", content: "Creme, seruri și plasturi coreeni pentru conturul ochilor, selectați după nevoie, ingrediente și tipul de ten." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: EyeCategoryPage,
@@ -109,6 +112,12 @@ function EyeCategoryPage() {
   };
 
   const active = (["concerns", "ingredients", "types", "brands", "skin", "availability"] as FilterArrayKey[]).flatMap((field) => filters[field].map((value) => ({ field, value })));
+  const draftResultCount = useMemo(() => eyeProducts.filter((product) => matches(product, draftFilters)).length, [draftFilters]);
+  const recoveryOptions = useMemo(() => active.flatMap(({ field, value }) => {
+    const candidate = { ...filters, [field]: filters[field].filter((item) => item !== value) };
+    const results = eyeProducts.filter((product) => matches(product, candidate)).length;
+    return results > 0 ? [{ field, value, results }] : [];
+  }), [active, filters]);
 
   return <div className="min-h-screen overflow-x-clip bg-background">
     <Header />
@@ -128,25 +137,26 @@ function EyeCategoryPage() {
           {concernChoices.map((choice) => {
             const mapped = choice === "Piele sensibilă" ? { field: "skin" as const, value: "Sensibil" } : { field: "concerns" as const, value: choice };
             const selected = filters[mapped.field].includes(mapped.value);
-            return <button key={choice} type="button" aria-pressed={selected} onClick={() => toggle(mapped.field, mapped.value)} className={cn("flex h-10 shrink-0 items-center gap-1.5 rounded-full border px-4 text-xs font-semibold transition-colors", selected ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:border-primary/40")}>
+            return <Button key={choice} type="button" variant={selected ? "default" : "outline"} aria-pressed={selected} onClick={() => toggle(mapped.field, mapped.value)} className={cn("h-10 shrink-0 gap-1.5 rounded-full px-4 text-xs font-semibold", !selected && "bg-card hover:border-primary/40")}>
               {selected && <Check className="size-3.5" />}{choice}
-            </button>;
+            </Button>;
           })}
         </div>
       </section>
 
       <div className="mt-6 flex items-center justify-between gap-3">
-        <Sheet open={filterOpen} onOpenChange={(open) => { setFilterOpen(open); if (open) setDraftFilters(filters); }}>
-          <SheetTrigger asChild><Button variant="outline" className="h-10 gap-2 rounded-full lg:hidden"><SlidersHorizontal className="size-4" />Filtre {count > 0 && <span className="grid size-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">{count}</span>}</Button></SheetTrigger>
-          <SheetContent side="bottom" className="flex max-h-[88dvh] flex-col rounded-t-3xl px-5 pb-5 pt-6">
-            <SheetHeader className="pr-7 text-left"><SheetTitle>Filtre</SheetTitle><SheetDescription>Alege criteriile, apoi aplică selecția.</SheetDescription></SheetHeader>
-            <div className="mt-3 min-h-0 flex-1 overflow-y-auto"><CategoryFilters filters={draftFilters} products={eyeProducts} onToggle={toggleDraft} onPromo={(promo) => setDraftFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setDraftFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div>
-            <SheetFooter className="mt-4 grid grid-cols-2 gap-2 border-t pt-4">
-              <Button variant="outline" onClick={() => setDraftFilters(emptyFilters)}>Șterge filtrele</Button>
-              <Button onClick={() => { setFilters(draftFilters); setFilterOpen(false); }}>Vezi {eyeProducts.filter((p) => matches(p, draftFilters)).length} produse</Button>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
+        <Button type="button" variant="outline" onClick={() => { setDraftFilters(filters); setFilterOpen(true); }} className="h-10 gap-2 rounded-full lg:hidden"><SlidersHorizontal className="size-4" />Filtre {count > 0 && <span className="grid size-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">{count}</span>}</Button>
+        {filterOpen && <div role="dialog" aria-modal="true" aria-labelledby="mobile-filter-title" className="fixed inset-0 z-50 flex h-dvh flex-col bg-background px-5 pb-4 pt-5 lg:hidden">
+          <div className="flex shrink-0 items-start justify-between border-b pb-4">
+            <div><h2 id="mobile-filter-title" className="text-lg font-semibold text-foreground">Filtre</h2><p className="mt-1 text-sm text-muted-foreground">Selectează criteriile potrivite.</p></div>
+            <Button type="button" variant="ghost" size="icon" aria-label="Închide filtrele" onClick={() => setFilterOpen(false)}><X className="size-4" /></Button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"><CategoryFilters filters={draftFilters} products={eyeProducts} onToggle={toggleDraft} onPromo={(promo) => setDraftFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setDraftFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div>
+          <div className="grid shrink-0 grid-cols-2 gap-2 border-t bg-background pt-4">
+            <Button variant="outline" onClick={() => setDraftFilters(emptyFilters)}>Șterge filtrele</Button>
+            <Button onClick={() => { setFilters(draftFilters); setFilterOpen(false); }}>Vezi {draftResultCount} {draftResultCount === 1 ? "produs" : "produse"}</Button>
+          </div>
+        </div>}
 
         <p className="hidden text-xs text-muted-foreground lg:block">{filtered.length} {filtered.length === 1 ? "produs găsit" : "produse găsite"}</p>
         <div className="ml-auto flex items-center gap-2">
@@ -161,14 +171,14 @@ function EyeCategoryPage() {
       </div>
 
       {(active.length > 0 || filters.promo || filters.minPrice > 0 || filters.maxPrice < 260) && <div className="mt-4 flex flex-wrap items-center gap-2">
-        {active.map(({ field, value }) => <button key={`${field}-${value}`} type="button" onClick={() => removeChip(field, value)} className="flex items-center gap-1 rounded-full bg-secondary/65 px-3 py-1.5 text-[10px] font-semibold text-primary">{value}<X className="size-3" /></button>)}
-        {filters.promo && <button type="button" onClick={() => removeChip("promo")} className="flex items-center gap-1 rounded-full bg-secondary/65 px-3 py-1.5 text-[10px] font-semibold text-primary">Promoții<X className="size-3" /></button>}
-        {(filters.minPrice > 0 || filters.maxPrice < 260) && <button type="button" onClick={() => removeChip("price")} className="flex items-center gap-1 rounded-full bg-secondary/65 px-3 py-1.5 text-[10px] font-semibold text-primary">{filters.minPrice}–{filters.maxPrice} lei<X className="size-3" /></button>}
-        <button type="button" onClick={reset} className="px-2 py-1 text-[10px] font-semibold text-muted-foreground underline underline-offset-4">Șterge tot</button>
+        {active.map(({ field, value }) => <Button key={`${field}-${value}`} type="button" variant="secondary" onClick={() => removeChip(field, value)} className="h-auto gap-1 rounded-full px-3 py-1.5 text-[10px] font-semibold text-primary">{value}<X className="size-3" /></Button>)}
+        {filters.promo && <Button type="button" variant="secondary" onClick={() => removeChip("promo")} className="h-auto gap-1 rounded-full px-3 py-1.5 text-[10px] font-semibold text-primary">Promoții<X className="size-3" /></Button>}
+        {(filters.minPrice > 0 || filters.maxPrice < 260) && <Button type="button" variant="secondary" onClick={() => removeChip("price")} className="h-auto gap-1 rounded-full px-3 py-1.5 text-[10px] font-semibold text-primary">{filters.minPrice}–{filters.maxPrice} lei<X className="size-3" /></Button>}
+        <Button type="button" variant="link" onClick={reset} className="h-auto px-2 py-1 text-[10px] font-semibold text-muted-foreground underline underline-offset-4">Șterge toate</Button>
       </div>}
 
       <div className="mt-7 grid min-w-0 gap-8 lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[245px_minmax(0,1fr)]">
-        <aside className="hidden lg:block"><div className="sticky top-44 rounded-2xl border bg-card px-4 py-1"><div className="flex items-center justify-between border-b py-4"><span className="text-sm font-bold">Filtre</span>{count > 0 && <button onClick={reset} className="text-[10px] font-semibold text-muted-foreground underline">Șterge</button>}</div><CategoryFilters filters={filters} products={eyeProducts} onToggle={toggle} onPromo={(promo) => setFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div></aside>
+        <aside className="hidden lg:block"><div className="sticky top-44 rounded-2xl border bg-card px-4 py-1"><div className="flex items-center justify-between border-b py-4"><span className="text-sm font-bold">Filtre</span>{count > 0 && <Button variant="link" onClick={reset} className="h-auto p-0 text-[10px] font-semibold text-muted-foreground underline">Șterge</Button>}</div><CategoryFilters filters={filters} products={eyeProducts} onToggle={toggle} onPromo={(promo) => setFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div></aside>
 
         <section aria-label="Produse" className="min-w-0">
           {filtered.length > 0 ? <>
@@ -176,7 +186,7 @@ function EyeCategoryPage() {
               {filtered.slice(0, visible).map((product) => <EyeProductCard key={product.id} product={product} priority={product.id === 1} />)}
             </div>
             {visible < filtered.length && <div className="mt-12 text-center"><Button variant="outline" className="h-11 rounded-full px-7" onClick={() => setVisible((n) => n + 8)}>Încarcă mai multe <ChevronDown className="ml-2 size-4" /></Button><p className="mt-2 text-[10px] text-muted-foreground">Ai văzut {Math.min(visible, filtered.length)} din {filtered.length} produse</p></div>}
-          </> : <div className="rounded-2xl border bg-card px-6 py-14 text-center"><h2 className="text-lg font-bold text-primary">Nu am găsit produse pentru combinația selectată</h2><p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">Elimină unul dintre filtre sau pornește din nou cu toate cele 22 de produse.</p><Button className="mt-5 rounded-full" onClick={reset}>Șterge filtrele</Button></div>}
+          </> : <div className="rounded-2xl border bg-card px-6 py-14 text-center"><h2 className="text-lg font-bold text-primary">Nu am găsit produse pentru combinația selectată</h2><p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">Elimină un filtru activ pentru a vedea din nou produse.</p>{recoveryOptions.length > 0 && <div className="mx-auto mt-5 flex max-w-lg flex-wrap justify-center gap-2">{recoveryOptions.map(({ field, value, results }) => <Button key={`${field}-${value}`} variant="outline" size="sm" className="rounded-full" onClick={() => removeChip(field, value)}>Elimină „{value}” · {results}</Button>)}</div>}<Button variant="link" className="mt-3" onClick={reset}>Șterge toate filtrele</Button></div>}
         </section>
       </div>
     </main>
