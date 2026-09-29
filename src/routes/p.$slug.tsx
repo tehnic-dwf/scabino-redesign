@@ -326,11 +326,9 @@ function RatingBadge() {
 
 function ProductPage() {
   const { addToCart } = useShop();
-  const [added, setAdded] = useState<number | null>(null);
 
   const add = (quantity = 1) => {
     addToCart({ slug: product.slug, price: product.price }, quantity);
-    setAdded(quantity);
   };
 
   const commaIndex = product.name.indexOf(",");
@@ -444,11 +442,6 @@ function ProductPage() {
         price={product.price}
         onAdd={() => add(1)}
         slug={product.slug}
-      />
-      <AddedToCartSheet
-        open={added !== null}
-        onOpenChange={(o) => !o && setAdded(null)}
-        quantity={added ?? 1}
       />
     </div>
   );
