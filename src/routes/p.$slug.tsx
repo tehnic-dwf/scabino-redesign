@@ -22,7 +22,6 @@ import {
   AuthenticityLine,
   DeliveryEstimate,
   HowToSteps,
-  ProductFaq,
   faqJsonLd,
 } from "@/components/pdp/ConversionBlocks";
 import { AddedToCartSheet } from "@/components/pdp/AddedToCartSheet";
@@ -199,100 +198,111 @@ function AttributeTags() {
 
 function IngredientsSection() {
   return (
-    <div className="grid gap-6 lg:grid-cols-3">
-      <div className="lg:col-span-1">
-        <ul className="flex flex-wrap gap-2">
-          {product.ingredientsKey.map((i) => (
-            <li
-              key={i}
-              className="rounded-full bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground"
-            >
-              {i}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="lg:col-span-2">
-        <ul className="space-y-3">
-          {product.keyIngredients.map((ing) => (
-            <li key={ing.name} className="rounded-xl border bg-card p-4">
-              <p className="text-sm font-semibold text-foreground">{ing.name}</p>
-              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{ing.role}</p>
-            </li>
-          ))}
-        </ul>
-        <Accordion type="single" collapsible className="mt-4">
-          <AccordionItem value="inci" className="border-b-0">
-            <AccordionTrigger className="rounded-xl border bg-card px-4 text-sm font-semibold text-primary hover:no-underline">
-              Lista completă de ingrediente (INCI)
-            </AccordionTrigger>
-            <AccordionContent className="px-4 pb-2 pt-3 text-sm leading-relaxed text-muted-foreground">
-              {product.inci}
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
-    </div>
+    <ul className="grid gap-3 sm:grid-cols-3">
+      {product.keyIngredients.map((ing) => (
+        <li key={ing.name} className="rounded-xl border bg-card p-4">
+          <p className="text-sm font-semibold text-foreground">{ing.name}</p>
+          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{ing.role}</p>
+        </li>
+      ))}
+    </ul>
   );
 }
 
-function DetailsSection() {
+function SecondaryDetails() {
   return (
-    <Accordion type="multiple" className="mt-12 border-t">
-      <AccordionItem value="utilizare" className="px-0">
-        <AccordionTrigger className="text-base font-semibold text-foreground hover:no-underline">
-          Cum îl folosești
+    <section aria-labelledby="details-heading" className="mt-14">
+      <h2 id="details-heading" className="text-xl font-bold text-foreground sm:text-2xl">
+        Detalii, la nevoie
+      </h2>
+      <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+        Formula completă, compatibilitatea și informațiile tehnice rămân la un pas distanță.
+      </p>
+      <Accordion type="multiple" className="mt-5 rounded-xl border bg-card px-4 sm:px-6">
+        <AccordionItem value="inci">
+          <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline sm:text-base">
+            Lista completă de ingrediente (INCI)
+          </AccordionTrigger>
+          <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
+            {product.inci}
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="evidence">
+          <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline sm:text-base">
+            Ce știm și ce nu promitem
         </AccordionTrigger>
-        <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
-          <ol className="list-decimal space-y-1.5 pl-5">
-            {product.usage.map((u) => (
-              <li key={u}>{u}</li>
-            ))}
-          </ol>
-          <p className="mt-4">
-            Moment în rutină: seara sau înainte de duș. Continuă rutina când produsul s-a
-            distribuit și se așază confortabil pe piele.
-          </p>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="detalii" className="px-0">
-        <AccordionTrigger className="text-base font-semibold text-foreground hover:no-underline">
-          Detalii produs
-        </AccordionTrigger>
-        <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
-          <p>{product.shortDescription}</p>
-          <h4 className="mt-5 font-semibold text-foreground">Caracteristici</h4>
-          <ul className="mt-2 space-y-2.5">
-            {product.uniqueFeatures.map((f) => (
-              <li key={f.title}>
-                <span className="font-medium text-foreground">{f.title}.</span> {f.text}
-              </li>
-            ))}
-          </ul>
-          <h4 className="mt-5 font-semibold text-foreground">Beneficii</h4>
-          <ul className="mt-2 list-disc space-y-1.5 pl-5">
-            {product.benefits.map((b) => (
-              <li key={b}>{b}</li>
-            ))}
-          </ul>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="extra" className="px-0">
-        <AccordionTrigger className="text-base font-semibold text-foreground hover:no-underline">
-          Informații suplimentare
-        </AccordionTrigger>
-        <AccordionContent>
-          <dl className="divide-y divide-border">
-            {product.extraInfo.map(([label, value]) => (
-              <div key={label} className="flex justify-between gap-6 py-2.5 text-sm">
-                <dt className="font-medium text-foreground">{label}</dt>
-                <dd className="text-right text-muted-foreground">{value}</dd>
-              </div>
-            ))}
-          </dl>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+          <AccordionContent>
+            <EvidenceBlock rows={product.evidence} />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="compatibility">
+          <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline sm:text-base">
+            Compatibilitate cu rutina ta
+          </AccordionTrigger>
+          <AccordionContent>
+            <CompatibilityBlock {...product.compatibility} />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="comparison">
+          <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline sm:text-base">
+            Compară cu o alternativă
+          </AccordionTrigger>
+          <AccordionContent>
+            <CompareTable
+              currentLabel={`${product.brand} Body Peel Shot`}
+              alternativeLabel={product.comparison.alternativeName}
+              rows={product.comparison.rows}
+            />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="technical">
+          <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline sm:text-base">
+            Descriere, beneficii și detalii tehnice
+          </AccordionTrigger>
+          <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
+            <p>{product.shortDescription}</p>
+            <h3 className="mt-5 font-semibold text-foreground">Caracteristici</h3>
+            <ul className="mt-2 space-y-2.5">
+              {product.uniqueFeatures.map((feature) => (
+                <li key={feature.title}>
+                  <span className="font-medium text-foreground">{feature.title}.</span> {feature.text}
+                </li>
+              ))}
+            </ul>
+            <h3 className="mt-5 font-semibold text-foreground">Beneficii</h3>
+            <ul className="mt-2 list-disc space-y-1.5 pl-5">
+              {product.benefits.map((benefit) => (
+                <li key={benefit}>{benefit}</li>
+              ))}
+            </ul>
+            <dl className="mt-5 divide-y divide-border border-t">
+              {product.extraInfo.map(([label, value]) => (
+                <div key={label} className="flex justify-between gap-6 py-2.5 text-sm">
+                  <dt className="font-medium text-foreground">{label}</dt>
+                  <dd className="text-right text-muted-foreground">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="faq" className="border-b-0">
+          <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline sm:text-base">
+            Întrebări frecvente
+          </AccordionTrigger>
+          <AccordionContent>
+            <dl className="divide-y divide-border">
+              {product.faq.map((item) => (
+                <div key={item.q} className="py-3 first:pt-0">
+                  <dt className="text-sm font-semibold text-foreground">{item.q}</dt>
+                  <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.a}</dd>
+                </div>
+              ))}
+            </dl>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqJsonLd() }} />
+    </section>
   );
 }
 
@@ -389,54 +399,17 @@ function ProductPage() {
         </Section>
 
         <Section
-          id="evidence"
-          title="Ce știm și ce nu promitem"
-          intro="Separăm ce spune brandul de ce vedem noi în formulă și de ce nu putem garanta."
-        >
-          <EvidenceBlock rows={product.evidence} />
-        </Section>
-
-        <Section
           id="ingrediente"
-          title="Ingredientele care contează"
-          intro="Trei ingrediente cu rol clar, plus lista completă dacă vrei să verifici."
+          title="Ingrediente-cheie"
+          intro="Trei ingrediente cu rol clar. Lista completă rămâne disponibilă mai jos."
         >
           <IngredientsSection />
         </Section>
 
-        <Section
-          id="compatibilitate"
-          title="Se combină cu ce folosești deja?"
-          intro="Verifică rapid dacă are loc în rutina ta sau dacă funcția este deja acoperită."
-        >
-          <CompatibilityBlock {...product.compatibility} />
-        </Section>
-
-        <Section
-          id="comparatie"
-          title="Compară cu o alternativă"
-          intro="O singură alternativă relevantă, nu douăsprezece produse similare."
-        >
-          <CompareTable
-            currentLabel={`${product.brand} Body Peel Shot`}
-            alternativeLabel={product.comparison.alternativeName}
-            rows={product.comparison.rows}
-          />
-        </Section>
-
-        <DetailsSection />
-
         <div id="reviews" className="scroll-mt-24" />
         <ReviewsSection />
 
-        <Section
-          id="faq"
-          title="Întrebări frecvente"
-          intro="Răspunsuri scurte la ce ne întreabă cel mai des clienții despre acest produs."
-        >
-          <ProductFaq />
-          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqJsonLd() }} />
-        </Section>
+        <SecondaryDetails />
 
         <Section
           id="routine-gap"
