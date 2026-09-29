@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Check, ChevronDown, SlidersHorizontal, X } from "lucide-react";
+import { Check, ChevronDown, RotateCcw, SlidersHorizontal, X } from "lucide-react";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -146,17 +146,32 @@ function EyeCategoryPage() {
 
       <div className="mt-6 flex items-center justify-between gap-3">
         <Button type="button" variant="outline" onClick={() => { setDraftFilters(filters); setFilterOpen(true); }} className="h-10 gap-2 rounded-full lg:hidden"><SlidersHorizontal className="size-4" />Filtre {count > 0 && <span className="grid size-5 place-items-center rounded-full bg-primary text-[10px] text-primary-foreground">{count}</span>}</Button>
-        {filterOpen && <div role="dialog" aria-modal="true" aria-labelledby="mobile-filter-title" className="fixed inset-0 z-50 flex h-dvh flex-col bg-background px-5 pb-4 pt-5 lg:hidden">
-          <div className="flex shrink-0 items-start justify-between border-b pb-4">
-            <div><h2 id="mobile-filter-title" className="text-lg font-semibold text-foreground">Filtre</h2><p className="mt-1 text-sm text-muted-foreground">Selectează criteriile potrivite.</p></div>
-            <Button type="button" variant="ghost" size="icon" aria-label="Închide filtrele" onClick={() => setFilterOpen(false)}><X className="size-4" /></Button>
-          </div>
-          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"><CategoryFilters filters={draftFilters} products={eyeProducts} onToggle={toggleDraft} onPromo={(promo) => setDraftFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setDraftFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div>
-          <div className="grid shrink-0 grid-cols-2 gap-2 border-t bg-background pt-4">
-            <Button variant="outline" onClick={() => setDraftFilters(emptyFilters)}>Șterge filtrele</Button>
-            <Button onClick={() => { setFilters(draftFilters); setFilterOpen(false); }}>Vezi {draftResultCount} {draftResultCount === 1 ? "produs" : "produse"}</Button>
-          </div>
-        </div>}
+          {filterOpen && (() => {
+            const draftChips: Array<{ key: string; label: string; clear: () => void }> = [
+              ...(["concerns", "ingredients", "types", "brands", "skin", "availability"] as FilterArrayKey[]).flatMap((field) =>
+                draftFilters[field].map((value) => ({ key: `${field}-${value}`, label: value, clear: () => setDraftFilters((f) => ({ ...f, [field]: f[field].filter((x) => x !== value) })) })),
+              ),
+              ...(draftFilters.promo ? [{ key: "promo", label: "Promoții", clear: () => setDraftFilters((f) => ({ ...f, promo: false })) }] : []),
+              ...((draftFilters.minPrice > 0 || draftFilters.maxPrice < 260) ? [{ key: "price", label: `${draftFilters.minPrice}–${draftFilters.maxPrice} lei`, clear: () => setDraftFilters((f) => ({ ...f, minPrice: 0, maxPrice: 260 })) }] : []),
+            ];
+            return <div role="dialog" aria-modal="true" aria-labelledby="mobile-filter-title" className="fixed inset-0 z-50 flex h-dvh flex-col bg-background px-5 pb-4 pt-3 lg:hidden">
+              <div className="grid shrink-0 grid-cols-[auto_1fr_auto] items-center gap-2 border-b pb-3">
+                <Button type="button" variant="ghost" size="icon" aria-label="Închide filtrele" onClick={() => setFilterOpen(false)}><X className="size-5" /></Button>
+                <h2 id="mobile-filter-title" className="text-center text-xl font-bold text-primary">Filtre</h2>
+                <Button type="button" variant="ghost" onClick={() => setDraftFilters(emptyFilters)} className="h-auto gap-1.5 px-1 py-1 text-sm font-semibold text-primary hover:bg-transparent hover:text-primary/80"><RotateCcw className="size-4" />Resetează</Button>
+              </div>
+              {draftChips.length > 0 && <div className="flex shrink-0 flex-wrap gap-2 border-b py-3">
+                {draftChips.map((chip) => <button key={chip.key} type="button" onClick={chip.clear} className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2 text-[13px] font-medium text-foreground/90 transition-colors hover:bg-muted/70">
+                  {chip.label}<X className="size-3.5 text-foreground/60" aria-hidden />
+                  <span className="sr-only">elimină filtrul</span>
+                </button>)}
+              </div>}
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"><CategoryFilters filters={draftFilters} products={eyeProducts} onToggle={toggleDraft} onPromo={(promo) => setDraftFilters((f) => ({ ...f, promo }))} onPrice={(minPrice, maxPrice) => setDraftFilters((f) => ({ ...f, minPrice, maxPrice }))} /></div>
+              <div className="shrink-0 border-t bg-background pt-4">
+                <Button className="h-12 w-full text-sm font-semibold" onClick={() => { setFilters(draftFilters); setFilterOpen(false); }}>Vezi {draftResultCount} {draftResultCount === 1 ? "produs" : "produse"}</Button>
+              </div>
+            </div>;
+          })()}
 
         <p className="hidden text-xs text-muted-foreground lg:block">{filtered.length} {filtered.length === 1 ? "produs găsit" : "produse găsite"}</p>
         <div className="ml-auto flex items-center gap-2">
