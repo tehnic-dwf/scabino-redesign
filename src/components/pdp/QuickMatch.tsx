@@ -7,6 +7,12 @@ import {
   Shapes,
   SprayCan,
   Waves,
+  Eye,
+  FlaskConical,
+  Sprout,
+  UserRound,
+  Target,
+  Package,
 } from "lucide-react";
 import type { QuickMatchAttribute } from "@/data/product";
 
@@ -17,6 +23,12 @@ const ICONS: Record<string, LucideIcon> = {
   format: SprayCan,
   usage: Waves,
   frequency: CalendarDays,
+  eye: Eye,
+  target: Target,
+  active: FlaskConical,
+  formula: Sprout,
+  skin: UserRound,
+  product: Package,
 };
 
 /**
