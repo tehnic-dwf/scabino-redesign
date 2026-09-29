@@ -384,12 +384,14 @@ function ProductPage() {
           />
         </Section>
 
+        <HowToSteps />
+
         <Section
           id="ingrediente"
-          title="Ingrediente-cheie"
+          title="Ingrediente cheie"
           intro="Trei ingrediente cu rol clar. Lista completă rămâne disponibilă mai jos."
         >
-          <IngredientsSection />
+          <IngredientChips />
         </Section>
 
         <div id="reviews" className="scroll-mt-24" />
