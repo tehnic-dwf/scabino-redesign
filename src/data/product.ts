@@ -324,7 +324,7 @@ export const product = {
     ["Tip de ten", "Sensibil, Toate tipurile"],
   ],
   inci:
-    "Water, Hypochlorous Acid, Sodium Chloride, Glycerin, Butylene Glycol, 1,2-Hexanediol, Panthenol, Allantoin, Ceramide NP, Sodium Hyaluronate, Niacinamide, Madecassoside, Betaine, Trehalose, Citric Acid, Disodium EDTA.",
+    "Water, Alcohol Denat., Carbomer, Quaternium-60, Propylene Glycol, 1,2-Hexanediol, Dipropylene Glycol, Cetrimonium Methosulfate, Caprylyl Methicone, Caprylyl Glycol, Polyglyceryl-10 Oleate, Ethylhexylglycerin, Charcoal Powder, Hypochlorous Acid (20ppm), Glucose, Chlorella Vulgaris Extract, Butylene Glycol, Fructose, Fructooligosaccharides, Tocopherol, Sodium Hyaluronate Crosspolymer, Cynanchum Atratum Extract, Xylose, Polyglutamic Acid, Althaea Rosea Flower Extract, Ceramide NP, Sodium Chloride, Allantoin, Panthenol, Oryza Sativa (Rice) Bran Water, Melaleuca Alternifolia (Tea Tree) Leaf Extract, Protease, Oryza Sativa (Rice) Extract, Centella Asiatica Extract, Hydrolyzed Hyaluronic Acid.",
   volumeMl: 280,
   expiry: "12.2028",
   origin: "Coreea de Sud",
