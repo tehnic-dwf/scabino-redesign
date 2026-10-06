@@ -17,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    env:
+      PAGES_BASE: /scabino-redesign/
     steps:
       - uses: actions/checkout@v5
 
