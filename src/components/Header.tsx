@@ -69,7 +69,7 @@ export function Header() {
 
           <Link to="/" className="shrink-0" aria-label="Scabino — pagina principală">
             <img
-              src="/scabino-wordmark.svg"
+              src={`${import.meta.env.BASE_URL}scabino-wordmark.svg`}
               alt="Scabino"
               width={162}
               height={41}

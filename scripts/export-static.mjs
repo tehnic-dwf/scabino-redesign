@@ -5,6 +5,7 @@ import { cp, mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const OUT = "dist/pages";
+const BASE = (process.env.PAGES_BASE || "/").replace(/\/$/, "");
 const ROUTES = [
   "/",
   "/p/medicube-hypochlorous-acid-body-peel-shot-280-ml",
@@ -18,7 +19,7 @@ const ctx = { waitUntil() {}, passThroughOnException() {}, props: {} };
 await cp("dist/client", OUT, { recursive: true });
 
 for (const route of ROUTES) {
-  let res = await server.fetch(new Request(`http://localhost${route}`), {}, ctx);
+  let res = await server.fetch(new Request(`http://localhost${BASE}${route === "/" ? "/" : route}`), {}, ctx);
   // server.fetch returns redirect Responses as-is; follow them (e.g. "/" -> default PDP).
   for (let i = 0; i < 5 && [301, 302, 303, 307, 308].includes(res.status); i++) {
     const location = res.headers.get("location");
