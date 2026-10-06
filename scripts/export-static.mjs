@@ -25,8 +25,9 @@ for (const route of ROUTES) {
   }
   // Follow the "/" redirect to the default PDP and save it as the homepage.
   const html = await res.text();
-  const file = join(OUT, route === "/" ? "index.html" : route, "index.html");
-  await mkdir(join(OUT, route === "/" ? "" : route), { recursive: true });
+  const dir = route === "/" ? OUT : join(OUT, route);
+  const file = join(dir, "index.html");
+  await mkdir(dir, { recursive: true });
   await writeFile(file, html);
   console.log(`exported ${route} -> ${file}`);
 }
