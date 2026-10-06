@@ -18,7 +18,13 @@ const ctx = { waitUntil() {}, passThroughOnException() {}, props: {} };
 await cp("dist/client", OUT, { recursive: true });
 
 for (const route of ROUTES) {
-  const res = await server.fetch(new Request(`http://localhost${route}`), {}, ctx);
+  let res = await server.fetch(new Request(`http://localhost${route}`), {}, ctx);
+  // server.fetch returns redirect Responses as-is; follow them (e.g. "/" -> default PDP).
+  for (let i = 0; i < 5 && [301, 302, 303, 307, 308].includes(res.status); i++) {
+    const location = res.headers.get("location");
+    if (!location) break;
+    res = await server.fetch(new Request(new URL(location, "http://localhost")), {}, ctx);
+  }
   if (res.status >= 400) {
     console.error(`Export failed for ${route}: HTTP ${res.status}`);
     process.exit(1);
