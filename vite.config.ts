@@ -13,6 +13,8 @@ export default defineConfig({
     server: { entry: "server" },
     // Static prerender so the site can also be exported to GitHub Pages
     // (NITRO_PRESET=github_pages in the deploy workflow).
-    prerender: { enabled: true, crawlLinks: true },
+    // Static export for GitHub Pages is handled by scripts/export-static.mjs
+    // (the built-in prerender is pinned by the platform and can't follow the
+    // "/" redirect, so it renders 0 pages here).
   },
 });

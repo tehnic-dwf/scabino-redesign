@@ -26,14 +26,15 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Build static site
-        env:
-          NITRO_PRESET: github_pages
         run: bun run build
+
+      - name: Export static pages
+        run: node scripts/export-static.mjs
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .output/public
+          path: dist/pages
 
   deploy:
     needs: build
