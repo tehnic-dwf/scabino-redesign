@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       PAGES_BASE: /scabino-redesign/
+      LOVABLE_SANDBOX: "1"
     steps:
       - uses: actions/checkout@v5
 
