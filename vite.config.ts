@@ -13,6 +13,16 @@ export default defineConfig({
     server: { entry: "server" },
     // Static prerender so the site can also be exported to GitHub Pages
     // (NITRO_PRESET=github_pages in the deploy workflow).
-    prerender: { enabled: true, crawlLinks: true },
+    prerender: {
+      enabled: true,
+      crawlLinks: true,
+      // "/" redirects to the default PDP, which confuses the crawler
+      // ("Max redirects reached") — prerender the real pages directly.
+      routes: [
+        "/p/medicube-hypochlorous-acid-body-peel-shot-280-ml",
+        "/p/k-secret-seoul-1988-eye-cream-retinal-liposome-4-fermented-bean-crema-anti-rid-cu-retinol-si-extract-fermentat-30ml",
+        "/cosmetice-coreene/creme-de-ochi-coreene",
+      ],
+    },
   },
 });
